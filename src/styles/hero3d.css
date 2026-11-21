@@ -1,0 +1,562 @@
+/* ============================================
+   SANKAR BALAJE — CRIMSON ANOMALY
+   SENTINEL CINEMATIC HERO
+============================================ */
+
+.sentinel-hero {
+  --parallax-x: 0px;
+  --parallax-y: 0px;
+
+  position: relative;
+  min-height: 760px;
+  height: 100svh;
+  max-height: 1200px;
+
+  background: #080808;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+/* ============================================
+   ATMOSPHERE
+============================================ */
+
+.sentinel-atmosphere {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      ellipse at 75% 66%,
+      rgba(212, 21, 20, 0.17),
+      transparent 49%
+    ),
+    radial-gradient(
+      ellipse at 35% 80%,
+      rgba(212, 21, 20, 0.045),
+      transparent 55%
+    ),
+    #080808;
+}
+
+.sentinel-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+
+  opacity: 0.21;
+
+  background-image:
+    linear-gradient(rgba(205, 203, 202, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(205, 203, 202, 0.07) 1px, transparent 1px);
+
+  background-size: 88px 88px;
+
+  mask-image: linear-gradient(90deg, transparent 15%, black 100%);
+}
+
+/* ============================================
+   CHARACTER COMPOSITION
+============================================ */
+
+.sentinel-portrait-shell {
+  position: absolute;
+
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 60%;
+
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0, 0, 0, 0.45) 13%,
+    black 37%
+  );
+}
+
+.sentinel-aura {
+  position: absolute;
+  width: 88%;
+  aspect-ratio: 1;
+  top: 16%;
+  right: 4%;
+
+  border-radius: 50%;
+  z-index: 0;
+
+  background: radial-gradient(
+    circle,
+    rgba(212, 21, 20, 0.31) 0%,
+    rgba(212, 21, 20, 0.1) 28%,
+    transparent 68%
+  );
+
+  filter: blur(30px);
+  animation: sentinel-aura-pulse 4.5s ease-in-out infinite;
+}
+
+.sentinel-portrait-float {
+  position: absolute;
+  inset: -3% -3% -3% 0;
+
+  animation: sentinel-float 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+.sentinel-portrait-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center 32%;
+
+  transform: translate3d(var(--parallax-x), var(--parallax-y), 0) scale(1.065);
+
+  transition: transform 0.45s ease-out;
+
+  filter: contrast(1.07) saturate(1.08)
+    drop-shadow(0 0 38px rgba(212, 21, 20, 0.22));
+}
+
+/* Atmospheric light passing over the character */
+
+.sentinel-energy-flare {
+  position: absolute;
+
+  right: 18%;
+  top: 18%;
+  width: 30%;
+  height: 60%;
+  z-index: 2;
+
+  pointer-events: none;
+
+  background: linear-gradient(
+    110deg,
+    transparent 30%,
+    rgba(212, 21, 20, 0.075) 48%,
+    transparent 65%
+  );
+
+  filter: blur(16px);
+
+  animation: sentinel-light-sweep 7s ease-in-out infinite;
+  mix-blend-mode: screen;
+}
+
+.sentinel-scanlines {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 5px,
+    rgba(0, 0, 0, 0.11) 6px
+  );
+
+  opacity: 0.26;
+}
+
+/* ============================================
+   TEXT CONTENT
+============================================ */
+
+.sentinel-hero .sentinel-copy {
+  position: relative;
+  z-index: 5;
+
+  padding-top: 75px;
+  pointer-events: none;
+}
+
+.sentinel-copy a,
+.sentinel-copy button {
+  pointer-events: auto;
+}
+
+.sentinel-hero .sentinel-title {
+  position: relative;
+
+  max-width: 980px;
+  font-size: clamp(70px, 9.7vw, 172px);
+  line-height: 0.87;
+  letter-spacing: -0.09em;
+
+  color: #e5e3e1;
+
+  text-shadow: 0 8px 35px rgba(0, 0, 0, 0.74);
+}
+
+.sentinel-title > span {
+  color: #bdbab9;
+}
+
+.sentinel-hero .hero-role,
+.sentinel-hero .hero-tagline {
+  position: relative;
+  max-width: 490px;
+
+  text-shadow: 0 2px 14px #080808;
+}
+
+.sentinel-hero .hero-tagline {
+  color: #b6b0ae;
+}
+
+.sentinel-live-dot {
+  display: inline-block;
+  flex: 0 0 auto;
+
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+
+  background: #d41514;
+
+  box-shadow:
+    0 0 12px #d41514,
+    0 0 22px rgba(212, 21, 20, 0.5);
+
+  animation: sentinel-status-pulse 2s ease-in-out infinite;
+}
+
+.sentinel-enter-button {
+  cursor: pointer;
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.035em;
+}
+
+.sentinel-enter-button:hover {
+  box-shadow:
+    0 0 18px rgba(212, 21, 20, 0.34),
+    0 0 55px rgba(212, 21, 20, 0.17);
+}
+
+.sentinel-enter-button:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.sentinel-status {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  margin-top: 54px;
+
+  font-family: "DM Mono", monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: #918a89;
+}
+
+.sentinel-status-line {
+  display: block;
+  width: 35px;
+  height: 1px;
+  background: #d41514;
+}
+
+.sentinel-side-label {
+  position: absolute;
+  right: 4vw;
+  bottom: 15%;
+  z-index: 6;
+
+  writing-mode: vertical-rl;
+
+  font-family: "DM Mono", monospace;
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  color: #c0a7a5;
+}
+
+.sentinel-hero .sentinel-scroll {
+  position: absolute;
+  bottom: 38px;
+  left: 4vw;
+  z-index: 7;
+}
+
+/* ============================================
+   INTRODUCTIONS AND CINEMATIC ENTRANCE
+============================================ */
+
+.sentinel-reveal {
+  animation: sentinel-text-reveal 0.95s both;
+}
+
+.sentinel-copy > :nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.sentinel-copy > :nth-child(2) {
+  animation-delay: 0.22s;
+}
+
+.sentinel-copy > :nth-child(3) {
+  animation-delay: 0.36s;
+}
+
+.sentinel-copy > :nth-child(4) {
+  animation-delay: 0.48s;
+}
+
+.sentinel-copy > :nth-child(5) {
+  animation-delay: 0.6s;
+}
+
+.sentinel-copy > :nth-child(6) {
+  animation-delay: 0.7s;
+}
+
+.sentinel-entering .sentinel-copy {
+  opacity: 0;
+  transform: translateY(-35px);
+
+  transition:
+    opacity 0.55s ease,
+    transform 0.65s ease;
+}
+
+.sentinel-entering .sentinel-portrait-shell {
+  transform: scale(1.11);
+  opacity: 0.48;
+
+  transition:
+    transform 0.65s ease,
+    opacity 0.65s ease;
+}
+
+/* ============================================
+   KEYFRAMES
+============================================ */
+
+@keyframes sentinel-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-13px);
+  }
+}
+
+@keyframes sentinel-aura-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.95);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes sentinel-status-pulse {
+  0%,
+  100% {
+    opacity: 0.65;
+    box-shadow: 0 0 8px #d41514;
+  }
+
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 22px #d41514;
+  }
+}
+
+@keyframes sentinel-light-sweep {
+  0%,
+  100% {
+    transform: translateX(-55%);
+    opacity: 0.12;
+  }
+
+  50% {
+    transform: translateX(50%);
+    opacity: 0.8;
+  }
+}
+
+@keyframes sentinel-text-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+    filter: blur(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* ============================================
+   TABLET
+============================================ */
+
+@media (max-width: 1050px) {
+  .sentinel-portrait-shell {
+    width: 65%;
+  }
+
+  .sentinel-hero .sentinel-title {
+    font-size: clamp(66px, 10.4vw, 120px);
+  }
+
+  .sentinel-hero .hero-role,
+  .sentinel-hero .hero-tagline {
+    max-width: 380px;
+  }
+}
+
+/* ============================================
+   MOBILE
+============================================ */
+
+@media (max-width: 680px) {
+  .sentinel-hero {
+    height: auto;
+    min-height: 880px;
+    max-height: none;
+
+    align-items: flex-start;
+  }
+
+  .sentinel-portrait-shell {
+    top: 70px;
+    bottom: auto;
+    right: 0;
+
+    width: 100%;
+    height: 470px;
+
+    mask-image: linear-gradient(
+      to bottom,
+      black 0%,
+      black 58%,
+      transparent 100%
+    );
+  }
+
+  .sentinel-portrait-image {
+    object-position: center 23%;
+  }
+
+  .sentinel-hero .sentinel-copy {
+    padding-top: 490px;
+    padding-bottom: 105px;
+  }
+
+  .sentinel-hero .sentinel-title {
+    font-size: clamp(58px, 13.8vw, 90px);
+    line-height: 0.91;
+  }
+
+  .sentinel-hero .hero-role {
+    font-size: 10px;
+    max-width: 330px;
+  }
+
+  .sentinel-hero .hero-tagline {
+    font-size: 13px;
+    line-height: 1.6;
+    max-width: 330px;
+  }
+
+  .sentinel-hero .eyebrow {
+    font-size: 8px;
+    letter-spacing: 0.11em;
+    gap: 10px;
+  }
+
+  .sentinel-hero .eyebrow .line {
+    width: 20px;
+  }
+
+  .sentinel-hero .hero-actions {
+    margin-top: 24px;
+    gap: 10px;
+  }
+
+  .sentinel-hero .hero-actions a,
+  .sentinel-hero .hero-actions button {
+    padding: 12px 13px;
+    min-height: 45px;
+    font-size: 9px;
+  }
+
+  .sentinel-status {
+    margin-top: 25px;
+    font-size: 8px;
+  }
+
+  .sentinel-side-label {
+    display: none;
+  }
+
+  .sentinel-hero .sentinel-scroll {
+    bottom: 25px;
+    left: 20px;
+  }
+
+  .sentinel-grid {
+    opacity: 0.1;
+  }
+}
+
+@media (max-width: 390px) {
+  .sentinel-portrait-shell {
+    height: 420px;
+  }
+
+  .sentinel-hero .sentinel-copy {
+    padding-top: 440px;
+  }
+
+  .sentinel-hero .sentinel-title {
+    font-size: 13.6vw;
+  }
+}
+
+/* ============================================
+   REDUCED MOTION
+============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .sentinel-hero *,
+  .sentinel-hero *::before,
+  .sentinel-hero *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .sentinel-portrait-image {
+    transform: none !important;
+  }
+
+  .sentinel-copy,
+  .sentinel-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}

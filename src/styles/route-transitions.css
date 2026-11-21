@@ -1,0 +1,174 @@
+/* ==========================================
+   CRIMSON ANOMALY
+   GLOBAL CINEMATIC ROUTE SYSTEM
+========================================== */
+
+/* The viewport is the cinematic stage. */
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+}
+
+html {
+  overflow: hidden;
+}
+
+body {
+  overflow: hidden;
+  margin: 0;
+}
+
+#root {
+  height: 100dvh;
+  position: relative;
+  overflow: hidden;
+  background: #080808;
+}
+
+/* Fixed header stays above every page transition. */
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+}
+
+/* Global route animation layer. */
+
+.route-scene {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+  background: #080808;
+
+  transform-origin: center center;
+  backface-visibility: hidden;
+
+  will-change: transform, opacity;
+}
+
+/* Homepage owns its own full-screen chapter system. */
+
+.route-scene--home {
+  overflow: hidden;
+}
+
+/* Individual project/lab/dimension pages
+   can scroll internally but without bars. */
+
+.route-scene--page {
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  overscroll-behavior-y: contain;
+  scrollbar-width: none;
+}
+
+.route-scene--page::-webkit-scrollbar {
+  display: none;
+}
+
+/* Decorative atmospheric light during routes. */
+
+.route-scene--page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+
+  background: radial-gradient(
+    ellipse at 80% 55%,
+    rgba(212, 21, 20, 0.1),
+    transparent 58%
+  );
+
+  pointer-events: none;
+  z-index: 0;
+}
+
+.route-scene--page > main,
+.route-scene--page > footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* Make room for the fixed navigation. */
+
+.route-scene--page .subpage {
+  min-height: calc(100dvh - 80px);
+  padding-top: clamp(135px, 14vh, 200px);
+}
+
+/* Full-screen home chapters remain clipped
+   within the route stage. */
+
+.route-scene--home .chapter-experience {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+}
+
+/* No duplicate footer on the homepage. */
+
+.route-scene--home .site-footer {
+  display: none;
+}
+
+/* Keep jump links accessible. */
+
+.skip-link {
+  z-index: 500;
+}
+
+/* Shared cinematic page links. */
+
+.route-scene--page a {
+  transition:
+    color 0.25s ease,
+    border-color 0.25s ease,
+    background-color 0.25s ease;
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 680px) {
+  .route-scene--page .subpage {
+    padding-top: 120px;
+    padding-bottom: 85px;
+  }
+
+  .route-scene--page {
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .route-scene {
+    transform-origin: center center;
+  }
+}
+
+/* ==========================================
+   REDUCED MOTION
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .route-scene {
+    will-change: auto;
+  }
+
+  .route-scene--page a {
+    transition: none;
+  }
+}

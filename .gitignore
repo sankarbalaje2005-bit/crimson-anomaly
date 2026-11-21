@@ -1,0 +1,53 @@
+
+# ==========================================
+# CRIMSON ANOMALY — GIT IGNORE
+# ==========================================
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+dist-ssr/
+.vite/
+
+# Vercel deployment
+.vercel/
+
+# Local backups
+backups/
+backup-before-zoom-fix/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Local development files
+*.local
+
+# Test coverage
+coverage/
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# TypeScript build cache
+*.tsbuildinfo

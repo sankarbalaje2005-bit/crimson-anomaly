@@ -1,0 +1,774 @@
+/* =================================================
+   THE CRIMSON ANOMALY — PHASE 5C
+   CINEMATIC CHAPTER PORTALS
+
+   Additive visual effects only.
+   Do not override Motion scene transforms.
+
+   Palette:
+   Obsidian #080808
+   Silver   #CDCBCA
+   Crimson  #D41514
+================================================= */
+
+/* =================================================
+   01. VISUAL EFFECT CONTAINER
+================================================= */
+
+.chapter-cinematic-fx {
+  --cfx-x: 73%;
+  --cfx-y: 51%;
+  --cfx-ring-size: 520px;
+  --cfx-intensity: 0.75;
+  --cfx-angle: -22deg;
+
+  position: absolute;
+  inset: 0;
+
+  z-index: 3;
+
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+
+  isolation: isolate;
+}
+
+/*
+   This effect layer sits ABOVE the visual scene
+   but cannot intercept mouse, wheel, touch,
+   or keyboard interactions.
+*/
+
+.chapter-cinematic-fx,
+.chapter-cinematic-fx * {
+  pointer-events: none;
+}
+
+/* =================================================
+   02. CHAPTER-SPECIFIC LIGHT POSITIONS
+================================================= */
+
+/* 00 — The Awakening / Crimson Sentinel */
+
+.chapter-cinematic-fx[data-chapter="home"] {
+  --cfx-x: 76%;
+  --cfx-y: 51%;
+  --cfx-ring-size: 530px;
+  --cfx-intensity: 0.42;
+  --cfx-angle: -19deg;
+}
+
+/* 01 — The Signal / About */
+
+.chapter-cinematic-fx[data-chapter="about"] {
+  --cfx-x: 31%;
+  --cfx-y: 54%;
+  --cfx-ring-size: 480px;
+  --cfx-intensity: 0.86;
+  --cfx-angle: -27deg;
+}
+
+/* 02 — The Architecture / Skills */
+
+.chapter-cinematic-fx[data-chapter="skills"] {
+  --cfx-x: 77%;
+  --cfx-y: 43%;
+  --cfx-ring-size: 440px;
+  --cfx-intensity: 0.58;
+  --cfx-angle: 15deg;
+}
+
+/* 03 — The Artifacts / Projects */
+
+.chapter-cinematic-fx[data-chapter="projects"] {
+  --cfx-x: 81%;
+  --cfx-y: 64%;
+  --cfx-ring-size: 490px;
+  --cfx-intensity: 0.72;
+  --cfx-angle: -12deg;
+}
+
+/* 04 — The Trajectory / Journey */
+
+.chapter-cinematic-fx[data-chapter="journey"] {
+  --cfx-x: 29%;
+  --cfx-y: 70%;
+  --cfx-ring-size: 580px;
+  --cfx-intensity: 0.63;
+  --cfx-angle: -35deg;
+}
+
+/* 05 — Motion Lab / Experimentation */
+
+.chapter-cinematic-fx[data-chapter="experimentation"] {
+  --cfx-x: 74%;
+  --cfx-y: 50%;
+  --cfx-ring-size: 570px;
+  --cfx-intensity: 0.95;
+  --cfx-angle: 27deg;
+}
+
+/* 06 — Transmission / Contact */
+
+.chapter-cinematic-fx[data-chapter="contact"] {
+  --cfx-x: 72%;
+  --cfx-y: 48%;
+  --cfx-ring-size: 580px;
+  --cfx-intensity: 0.82;
+  --cfx-angle: -14deg;
+}
+
+/* =================================================
+   03. AMBIENT BACKLIGHT
+================================================= */
+
+.cfx-ambient {
+  position: absolute;
+  inset: -12%;
+
+  background:
+    radial-gradient(
+      ellipse at var(--cfx-x) var(--cfx-y),
+      rgba(212, 21, 20, 0.12),
+      rgba(212, 21, 20, 0.032) 31%,
+      transparent 58%
+    ),
+    radial-gradient(
+      ellipse at 50% 105%,
+      rgba(212, 21, 20, 0.045),
+      transparent 55%
+    );
+
+  opacity: var(--cfx-intensity);
+
+  animation: cfx-ambient-breathe 8s ease-in-out infinite;
+}
+
+/* =================================================
+   04. CINEMATIC PORTAL
+================================================= */
+
+.cfx-portal {
+  position: absolute;
+
+  left: var(--cfx-x);
+  top: var(--cfx-y);
+
+  width: var(--cfx-ring-size);
+  height: var(--cfx-ring-size);
+
+  border-radius: 50%;
+
+  transform: translate(-50%, -50%);
+  transform-origin: center;
+
+  opacity: 0;
+
+  animation: cfx-portal-forward 920ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Reverse-direction portal starts larger
+   and collapses toward its center. */
+
+.chapter-cinematic-fx[data-direction="reverse"] .cfx-portal {
+  animation-name: cfx-portal-reverse;
+}
+
+.cfx-portal-outer,
+.cfx-portal-middle,
+.cfx-portal-inner {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.cfx-portal-outer {
+  inset: 0;
+
+  border: 1px solid rgba(212, 21, 20, 0.48);
+
+  box-shadow:
+    0 0 18px rgba(212, 21, 20, 0.1),
+    inset 0 0 25px rgba(212, 21, 20, 0.035);
+}
+
+.cfx-portal-outer::before {
+  content: "";
+
+  position: absolute;
+  inset: -2px;
+
+  border-radius: inherit;
+
+  border: 3px solid transparent;
+
+  border-top-color: rgba(212, 21, 20, 0.95);
+  border-bottom-color: rgba(212, 21, 20, 0.32);
+
+  filter: drop-shadow(0 0 11px rgba(212, 21, 20, 0.65));
+}
+
+.cfx-portal-middle {
+  inset: 15%;
+
+  border: 1px dashed rgba(205, 203, 202, 0.34);
+}
+
+.cfx-portal-inner {
+  inset: 34%;
+
+  border: 1px solid rgba(212, 21, 20, 0.47);
+
+  background: radial-gradient(
+    circle,
+    rgba(212, 21, 20, 0.095),
+    transparent 72%
+  );
+
+  box-shadow: 0 0 35px rgba(212, 21, 20, 0.12);
+}
+
+/* =================================================
+   05. LIGHT FLASH DURING SCENE CHANGE
+================================================= */
+
+.cfx-transition-flash {
+  position: absolute;
+  inset: 0;
+
+  opacity: 0;
+
+  background: radial-gradient(
+    circle at var(--cfx-x) var(--cfx-y),
+    rgba(212, 21, 20, 0.25) 0%,
+    rgba(212, 21, 20, 0.075) 19%,
+    transparent 53%
+  );
+
+  mix-blend-mode: screen;
+
+  animation: cfx-transition-pulse 880ms ease-out both;
+}
+
+/* =================================================
+   06. DIAGONAL ENERGY SWEEP
+================================================= */
+
+.cfx-energy-sweep {
+  position: absolute;
+
+  top: -55%;
+  left: 35%;
+
+  width: 16%;
+  height: 210%;
+
+  opacity: 0;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(212, 21, 20, 0.028) 28%,
+    rgba(255, 85, 72, 0.085) 49%,
+    rgba(212, 21, 20, 0.025) 72%,
+    transparent
+  );
+
+  filter: blur(24px);
+  mix-blend-mode: screen;
+
+  transform: rotate(var(--cfx-angle)) translateX(-120vw);
+
+  animation: cfx-sweep-forward 1100ms ease-in-out both;
+}
+
+.chapter-cinematic-fx[data-direction="reverse"] .cfx-energy-sweep {
+  animation-name: cfx-sweep-reverse;
+}
+
+/* =================================================
+   07. DIGITAL DEPTH GRID
+================================================= */
+
+.cfx-grid {
+  position: absolute;
+  inset: 0;
+
+  opacity: 0.22;
+
+  background-image:
+    linear-gradient(rgba(205, 203, 202, 0.026) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(205, 203, 202, 0.026) 1px, transparent 1px);
+
+  background-size: 78px 78px;
+
+  mask-image: radial-gradient(
+    ellipse at var(--cfx-x) var(--cfx-y),
+    black 0%,
+    transparent 65%
+  );
+}
+
+/* =================================================
+   08. PERSISTENT ORBIT DETAILS
+================================================= */
+
+.cfx-orbit-system {
+  position: absolute;
+
+  left: var(--cfx-x);
+  top: var(--cfx-y);
+
+  width: var(--cfx-ring-size);
+  height: var(--cfx-ring-size);
+
+  transform: translate(-50%, -50%);
+
+  opacity: 0;
+
+  animation: cfx-orbit-appear 1.3s 0.25s ease-out forwards;
+}
+
+.cfx-orbit {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.cfx-orbit-one {
+  inset: 7%;
+
+  border: 1px solid rgba(212, 21, 20, 0.14);
+}
+
+.cfx-orbit-two {
+  inset: 21%;
+
+  border: 1px dashed rgba(205, 203, 202, 0.12);
+
+  animation: cfx-orbit-spin 40s linear infinite;
+}
+
+.cfx-orbit-three {
+  inset: 31%;
+
+  border: 1px solid transparent;
+  border-top-color: rgba(212, 21, 20, 0.38);
+  border-left-color: rgba(212, 21, 20, 0.12);
+
+  animation: cfx-orbit-spin 28s linear infinite reverse;
+}
+
+/* =================================================
+   09. FLOATING ENERGY TRACES
+================================================= */
+
+.cfx-traces {
+  position: absolute;
+  inset: 0;
+
+  opacity: 0.35;
+
+  animation: cfx-traces-appear 1.4s ease-out both;
+}
+
+.cfx-trace {
+  position: absolute;
+
+  display: block;
+
+  width: 1px;
+
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(212, 21, 20, 0.48),
+    transparent
+  );
+
+  box-shadow: 0 0 12px rgba(212, 21, 20, 0.33);
+}
+
+.cfx-trace-one {
+  height: 25%;
+  top: 12%;
+  right: 17%;
+  transform: rotate(15deg);
+}
+
+.cfx-trace-two {
+  height: 20%;
+  top: 52%;
+  right: 35%;
+  transform: rotate(-12deg);
+}
+
+.cfx-trace-three {
+  height: 30%;
+  bottom: 8%;
+  right: 6%;
+  transform: rotate(8deg);
+}
+
+/* =================================================
+   10. HOLOGRAPHIC CORNER DETAILS
+================================================= */
+
+.cfx-corner {
+  position: absolute;
+
+  width: 27px;
+  height: 27px;
+
+  border-color: rgba(212, 21, 20, 0.27);
+  border-style: solid;
+
+  opacity: 0;
+
+  animation: cfx-corner-appear 900ms 400ms ease-out forwards;
+}
+
+.cfx-corner-tl {
+  top: 13%;
+  left: 5%;
+  border-width: 1px 0 0 1px;
+}
+
+.cfx-corner-tr {
+  top: 13%;
+  right: 5%;
+  border-width: 1px 1px 0 0;
+}
+
+.cfx-corner-bl {
+  bottom: 12%;
+  left: 5%;
+  border-width: 0 0 1px 1px;
+}
+
+.cfx-corner-br {
+  bottom: 12%;
+  right: 5%;
+  border-width: 0 1px 1px 0;
+}
+
+/* =================================================
+   11. DISTINCTIVE CHAPTER TREATMENTS
+================================================= */
+
+/* Home: retain focus on the existing 2.5D image. */
+
+.chapter-cinematic-fx[data-chapter="home"] .cfx-orbit-system {
+  opacity: 0;
+  animation: none;
+}
+
+.chapter-cinematic-fx[data-chapter="home"] .cfx-grid {
+  opacity: 0.08;
+}
+
+.chapter-cinematic-fx[data-chapter="home"] .cfx-traces {
+  opacity: 0.17;
+}
+
+/* About: the signal spreads outward. */
+
+.chapter-cinematic-fx[data-chapter="about"] .cfx-orbit-one {
+  border-style: dashed;
+}
+
+.chapter-cinematic-fx[data-chapter="about"] .cfx-ambient {
+  background: radial-gradient(
+    ellipse at 31% 54%,
+    rgba(212, 21, 20, 0.16),
+    transparent 53%
+  );
+}
+
+/* Skills: stronger engineering-grid identity. */
+
+.chapter-cinematic-fx[data-chapter="skills"] .cfx-grid {
+  opacity: 0.44;
+  background-size: 56px 56px;
+}
+
+.chapter-cinematic-fx[data-chapter="skills"] .cfx-orbit-system {
+  opacity: 0;
+  animation: none;
+}
+
+/* Projects: visual emphasis on scanning. */
+
+.chapter-cinematic-fx[data-chapter="projects"] .cfx-energy-sweep {
+  width: 9%;
+  filter: blur(14px);
+}
+
+.chapter-cinematic-fx[data-chapter="projects"] .cfx-grid {
+  opacity: 0.33;
+}
+
+/* Journey: energetic, directional light. */
+
+.chapter-cinematic-fx[data-chapter="journey"] .cfx-trace-one {
+  transform: rotate(39deg);
+}
+
+.chapter-cinematic-fx[data-chapter="journey"] .cfx-trace-two {
+  transform: rotate(-37deg);
+}
+
+/* Experimentation: a larger spatial energy field. */
+
+.chapter-cinematic-fx[data-chapter="experimentation"] .cfx-orbit-one {
+  border-color: rgba(212, 21, 20, 0.24);
+}
+
+.chapter-cinematic-fx[data-chapter="experimentation"] .cfx-orbit-three {
+  border-top-color: rgba(212, 21, 20, 0.65);
+}
+
+/* Contact: a soft focused transmission pulse. */
+
+.chapter-cinematic-fx[data-chapter="contact"] .cfx-ambient {
+  opacity: 0.95;
+}
+
+.chapter-cinematic-fx[data-chapter="contact"] .cfx-orbit-middle {
+  opacity: 0.35;
+}
+
+/* =================================================
+   12. KEYFRAMES
+================================================= */
+
+@keyframes cfx-portal-forward {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.34);
+  }
+
+  24% {
+    opacity: 0.8;
+  }
+
+  66% {
+    opacity: 0.43;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(2.45);
+  }
+}
+
+@keyframes cfx-portal-reverse {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(2.45);
+  }
+
+  23% {
+    opacity: 0.63;
+  }
+
+  62% {
+    opacity: 0.42;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.34);
+  }
+}
+
+@keyframes cfx-transition-pulse {
+  0% {
+    opacity: 0;
+  }
+
+  28% {
+    opacity: 0.76;
+  }
+
+  70% {
+    opacity: 0.15;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes cfx-sweep-forward {
+  0% {
+    opacity: 0;
+    transform: rotate(var(--cfx-angle)) translateX(-120vw);
+  }
+
+  34% {
+    opacity: 0.66;
+  }
+
+  100% {
+    opacity: 0;
+    transform: rotate(var(--cfx-angle)) translateX(120vw);
+  }
+}
+
+@keyframes cfx-sweep-reverse {
+  0% {
+    opacity: 0;
+    transform: rotate(var(--cfx-angle)) translateX(120vw);
+  }
+
+  34% {
+    opacity: 0.66;
+  }
+
+  100% {
+    opacity: 0;
+    transform: rotate(var(--cfx-angle)) translateX(-120vw);
+  }
+}
+
+@keyframes cfx-ambient-breathe {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.95;
+    transform: scale(1.035);
+  }
+}
+
+@keyframes cfx-orbit-appear {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.46;
+  }
+}
+
+@keyframes cfx-orbit-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes cfx-traces-appear {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.35;
+  }
+}
+
+@keyframes cfx-corner-appear {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.48;
+  }
+}
+
+/* =================================================
+   13. TABLET
+================================================= */
+
+@media (max-width: 1000px) {
+  .chapter-cinematic-fx {
+    --cfx-ring-size: 410px;
+  }
+
+  .cfx-traces {
+    opacity: 0.22;
+  }
+
+  .cfx-corner {
+    width: 19px;
+    height: 19px;
+  }
+}
+
+/* =================================================
+   14. MOBILE
+================================================= */
+
+@media (max-width: 680px) {
+  .chapter-cinematic-fx {
+    --cfx-x: 65%;
+    --cfx-y: 38%;
+    --cfx-ring-size: 300px;
+    --cfx-intensity: 0.48;
+  }
+
+  .cfx-orbit-system,
+  .cfx-traces,
+  .cfx-corner {
+    display: none;
+  }
+
+  .cfx-grid {
+    opacity: 0.1;
+  }
+
+  .cfx-energy-sweep {
+    width: 26%;
+    filter: blur(18px);
+  }
+
+  .cfx-transition-flash {
+    background: radial-gradient(
+      circle at var(--cfx-x) var(--cfx-y),
+      rgba(212, 21, 20, 0.16),
+      transparent 58%
+    );
+  }
+}
+
+/* =================================================
+   15. REDUCED MOTION
+================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .chapter-cinematic-fx *,
+  .chapter-cinematic-fx *::before,
+  .chapter-cinematic-fx *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .cfx-portal,
+  .cfx-transition-flash,
+  .cfx-energy-sweep,
+  .cfx-traces,
+  .cfx-orbit-system {
+    display: none;
+  }
+
+  .cfx-ambient {
+    opacity: 0.35;
+  }
+
+  .cfx-grid {
+    opacity: 0.08;
+  }
+
+  .cfx-corner {
+    opacity: 0.18;
+  }
+}

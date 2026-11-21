@@ -1,0 +1,717 @@
+/* ==============================================
+   CRIMSON ANOMALY — PHASE 5E
+   CINEMATIC CHAPTER HUD AND MICRO-INTERACTIONS
+
+   Additive layer:
+   Does not override .chapter-page transforms,
+   .route-scene transforms, or Sentinel motion.
+============================================== */
+
+:root {
+  --ci-crimson: #d41514;
+  --ci-silver: #cdcbca;
+  --ci-obsidian: #080808;
+}
+
+/* ==============================================
+   01. HUD CONTAINER
+============================================== */
+
+.chapter-interface {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.chapter-interface *,
+.chapter-interface *::before,
+.chapter-interface *::after {
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+/* ==============================================
+   02. TOP-LEFT SIGNATURE
+============================================== */
+
+.ci-top-signature {
+  position: absolute;
+  top: 91px;
+  left: clamp(26px, 4.5vw, 82px);
+
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  color: rgba(205, 203, 202, 0.5);
+  font-family: "DM Mono", monospace;
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.13em;
+}
+
+.ci-live-dot {
+  width: 5px;
+  height: 5px;
+  flex: 0 0 auto;
+
+  border-radius: 50%;
+  background: #d41514;
+
+  box-shadow: 0 0 8px rgba(212, 21, 20, 0.8);
+
+  animation: ci-dot-breathe 2.5s ease-in-out infinite;
+}
+
+.ci-signature-line {
+  width: 28px;
+  height: 1px;
+
+  background: rgba(212, 21, 20, 0.42);
+}
+
+.ci-signature-code {
+  color: #b99491;
+}
+
+/* ==============================================
+   03. VERTICAL ORIENTATION MARKERS
+============================================== */
+
+.ci-side-markers {
+  position: absolute;
+  left: 19px;
+  top: 50%;
+
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  transform: translateY(-50%);
+  writing-mode: vertical-rl;
+
+  color: rgba(205, 203, 202, 0.33);
+  font-family: "DM Mono", monospace;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+}
+
+.ci-side-line {
+  height: 50px;
+  width: 1px;
+
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(212, 21, 20, 0.48),
+    transparent
+  );
+}
+
+/* ==============================================
+   04. CURRENT CHAPTER EDITORIAL LABEL
+============================================== */
+
+.ci-chapter-identity {
+  position: absolute;
+  left: clamp(26px, 4.5vw, 82px);
+  bottom: 77px;
+
+  width: 260px;
+  max-width: calc(100vw - 100px);
+
+  min-height: 58px;
+}
+
+.ci-identity-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.ci-identity-overline {
+  color: rgba(205, 203, 202, 0.43);
+
+  font-family: "DM Mono", monospace;
+  font-size: 8px;
+  letter-spacing: 0.16em;
+}
+
+.ci-identity-content strong {
+  color: #cdcbca;
+
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 16px;
+  line-height: 1.1;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+
+  text-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+}
+
+.ci-identity-subtitle {
+  color: #8c807e;
+
+  font-family: "DM Mono", monospace;
+  font-size: 8px;
+  line-height: 1.5;
+  letter-spacing: 0.13em;
+}
+
+/* ==============================================
+   05. PROGRESS INDICATOR
+============================================== */
+
+.ci-progress {
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+
+  width: clamp(180px, 22vw, 340px);
+
+  transform: translateX(-50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.ci-progress-label {
+  color: rgba(205, 203, 202, 0.47);
+
+  font-family: "DM Mono", monospace;
+  font-size: 8px;
+  letter-spacing: 0.1em;
+
+  white-space: nowrap;
+}
+
+.ci-progress-track {
+  position: relative;
+  flex: 1;
+
+  min-width: 55px;
+  height: 2px;
+
+  background: rgba(205, 203, 202, 0.12);
+  overflow: hidden;
+}
+
+.ci-progress-fill {
+  height: 100%;
+
+  background: #d41514;
+
+  box-shadow: 0 0 9px rgba(212, 21, 20, 0.75);
+}
+
+.ci-progress-value {
+  font-family: "DM Mono", monospace;
+  font-size: 9px;
+  color: #d41514;
+
+  white-space: nowrap;
+}
+
+.ci-progress-value span {
+  color: #6e6562;
+}
+
+/* ==============================================
+   06. DIRECTIONAL TRANSITION LIGHT
+============================================== */
+
+.ci-transition-cue {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+
+  opacity: 0;
+  animation: ci-cue-appear 0.75s ease-out both;
+}
+
+.ci-transition-light {
+  position: absolute;
+
+  top: -30%;
+  left: 50%;
+
+  width: 16%;
+  height: 160%;
+
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(212, 21, 20, 0.02) 25%,
+    rgba(255, 53, 43, 0.095) 50%,
+    rgba(212, 21, 20, 0.02) 75%,
+    transparent
+  );
+
+  filter: blur(28px);
+  mix-blend-mode: screen;
+
+  transform: rotate(17deg) translateX(-130vw);
+
+  animation: ci-light-forward 0.82s ease-in-out both;
+}
+
+.ci-transition-cue[data-direction="reverse"] .ci-transition-light {
+  animation-name: ci-light-reverse;
+}
+
+.ci-transition-edge {
+  position: absolute;
+  inset: 0;
+
+  background: radial-gradient(
+    ellipse at 72% 50%,
+    rgba(212, 21, 20, 0.11),
+    transparent 58%
+  );
+
+  animation: ci-edge-flash 0.7s ease-out both;
+}
+
+/* ==============================================
+   07. TECHNICAL SIGNATURE
+============================================== */
+
+.ci-technical-marker {
+  position: absolute;
+
+  right: 78px;
+  bottom: 85px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-family: "DM Mono", monospace;
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  color: rgba(205, 203, 202, 0.42);
+}
+
+.ci-marker-symbol {
+  font-size: 18px;
+  color: #d41514;
+}
+
+/* ==============================================
+   08. SKILL CARD MICRO-INTERACTIONS
+============================================== */
+
+.chapter-page--skills .chapter-skill {
+  position: relative;
+  overflow: hidden;
+
+  transition:
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.28s ease,
+    box-shadow 0.28s ease;
+}
+
+.chapter-page--skills .chapter-skill::after {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 1px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(212, 21, 20, 0.75),
+    transparent
+  );
+
+  opacity: 0;
+  transition: opacity 0.28s ease;
+}
+
+@media (hover: hover) {
+  .chapter-page--skills .chapter-skill:hover {
+    transform: translateY(-6px);
+
+    border-color: rgba(212, 21, 20, 0.56);
+
+    box-shadow:
+      0 14px 38px rgba(0, 0, 0, 0.19),
+      0 0 28px rgba(212, 21, 20, 0.08);
+  }
+
+  .chapter-page--skills .chapter-skill:hover::after {
+    opacity: 1;
+  }
+}
+
+/* ==============================================
+   09. PROJECT ARTIFACT MICRO-INTERACTIONS
+============================================== */
+
+.chapter-page--projects .chapter-project {
+  position: relative;
+  isolation: isolate;
+
+  transition:
+    padding-inline 0.28s ease,
+    background-color 0.28s ease,
+    border-color 0.28s ease;
+}
+
+.chapter-page--projects .chapter-project::before {
+  content: "";
+
+  position: absolute;
+  inset: 0 auto 0 0;
+
+  width: 2px;
+
+  background: #d41514;
+
+  box-shadow: 0 0 15px rgba(212, 21, 20, 0.6);
+
+  transform: scaleY(0);
+  transform-origin: center;
+  transition: transform 0.28s ease;
+}
+
+.chapter-page--projects .chapter-project-arrow {
+  transition:
+    transform 0.28s ease,
+    color 0.28s ease;
+}
+
+.chapter-page--projects .chapter-project:hover,
+.chapter-page--projects .chapter-project:focus-visible {
+  background: rgba(212, 21, 20, 0.075);
+  border-color: rgba(212, 21, 20, 0.28);
+}
+
+.chapter-page--projects .chapter-project:hover::before,
+.chapter-page--projects .chapter-project:focus-visible::before {
+  transform: scaleY(1);
+}
+
+.chapter-page--projects .chapter-project:hover .chapter-project-arrow,
+.chapter-page--projects .chapter-project:focus-visible .chapter-project-arrow {
+  transform: translate(3px, -3px);
+  color: #ff4f46;
+}
+
+/* ==============================================
+   10. INTERACTIVE BUTTON FINISH
+============================================== */
+
+.chapter-page--experimentation .button-primary,
+.chapter-page--contact .button-primary,
+.chapter-page--contact .button-quiet {
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+@media (hover: hover) {
+  .chapter-page--experimentation .button-primary:hover,
+  .chapter-page--contact .button-primary:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+      0 0 18px rgba(212, 21, 20, 0.25),
+      0 0 42px rgba(212, 21, 20, 0.11);
+  }
+}
+
+/* ==============================================
+   11. FOCUS AND KEYBOARD ACCESSIBILITY
+============================================== */
+
+.chapter-project:focus-visible,
+.chapter-secondary-link:focus-visible,
+.chapter-contact-links a:focus-visible {
+  outline: 2px solid #d41514;
+  outline-offset: 4px;
+}
+
+/* ==============================================
+   12. ANIMATIONS
+============================================== */
+
+@keyframes ci-dot-breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 15px #d41514;
+  }
+}
+
+@keyframes ci-cue-appear {
+  0% {
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 0.85;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ci-light-forward {
+  from {
+    transform: rotate(17deg) translateX(-130vw);
+  }
+
+  to {
+    transform: rotate(17deg) translateX(130vw);
+  }
+}
+
+@keyframes ci-light-reverse {
+  from {
+    transform: rotate(17deg) translateX(130vw);
+  }
+
+  to {
+    transform: rotate(17deg) translateX(-130vw);
+  }
+}
+
+@keyframes ci-edge-flash {
+  0% {
+    opacity: 0;
+  }
+
+  30% {
+    opacity: 0.8;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ==============================================
+   13. LAPTOP
+============================================== */
+
+@media (max-width: 1200px) {
+  .ci-technical-marker {
+    display: none;
+  }
+
+  .ci-chapter-identity {
+    bottom: 64px;
+  }
+
+  .ci-progress {
+    width: 250px;
+  }
+
+  .ci-progress-label {
+    display: none;
+  }
+}
+
+/* ==============================================
+   14. TABLET
+============================================== */
+
+@media (max-width: 900px) {
+  .ci-top-signature {
+    top: 85px;
+    font-size: 8px;
+  }
+
+  .ci-side-markers {
+    display: none;
+  }
+
+  .ci-chapter-identity {
+    left: 24px;
+    bottom: 69px;
+  }
+
+  .ci-progress {
+    left: auto;
+    right: 85px;
+    bottom: 23px;
+
+    transform: none;
+
+    width: 180px;
+  }
+}
+
+/* ==============================================
+   15. MOBILE
+============================================== */
+
+@media (max-width: 680px) {
+  .ci-top-signature,
+  .ci-side-markers,
+  .ci-technical-marker {
+    display: none;
+  }
+
+  .ci-chapter-identity {
+    left: 20px;
+    bottom: 64px;
+
+    width: 220px;
+  }
+
+  .ci-identity-overline,
+  .ci-identity-subtitle {
+    display: none;
+  }
+
+  .ci-identity-content strong {
+    font-size: 12px;
+  }
+
+  .ci-progress {
+    left: 20px;
+    right: auto;
+    bottom: 15px;
+
+    width: 120px;
+  }
+
+  .ci-progress-value {
+    font-size: 8px;
+  }
+
+  .ci-transition-light {
+    filter: blur(18px);
+  }
+
+  .chapter-page--skills .chapter-skill:hover {
+    transform: none;
+  }
+}
+
+/* ==============================================
+   16. SHORT VIEWPORTS
+
+   Avoid competing with the real content.
+============================================== */
+
+@media (max-height: 650px) and (min-width: 681px) {
+  .ci-chapter-identity,
+  .ci-side-markers,
+  .ci-technical-marker {
+    display: none;
+  }
+
+  .ci-progress {
+    bottom: 13px;
+  }
+}
+
+/* ==============================================
+   17. REDUCED MOTION
+============================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .chapter-interface *,
+  .chapter-interface *::before,
+  .chapter-interface *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .ci-transition-cue {
+    display: none;
+  }
+
+  .ci-live-dot {
+    opacity: 0.75;
+  }
+
+  .chapter-page--skills .chapter-skill:hover {
+    transform: none;
+  }
+
+  .chapter-page--projects .chapter-project-arrow {
+    transform: none !important;
+  }
+
+  .chapter-page--experimentation .button-primary:hover,
+  .chapter-page--contact .button-primary:hover {
+    transform: none;
+  }
+}
+
+/* ==============================================
+   PHASE 5E — EXISTING UI COMPATIBILITY
+============================================== */
+
+/* Old counter stays in its original bottom-left
+   location. Move the new label above it. */
+
+.chapter-experience .ci-chapter-identity {
+  bottom: 88px;
+}
+
+/* Keep the new progress line away from the
+   old counter and directional controls. */
+
+.chapter-experience .ci-progress {
+  left: 50%;
+  right: auto;
+  bottom: 25px;
+
+  transform: translateX(-50%);
+}
+
+/* Keep the interface separate from the
+   existing chapter navigation dots. */
+
+.chapter-experience .chapter-nav,
+.chapter-experience .chapter-direction-controls {
+  z-index: 95;
+}
+
+/* On phones, minimize the secondary HUD. */
+
+@media (max-width: 680px) {
+  .chapter-experience .ci-chapter-identity {
+    left: 20px;
+    bottom: 70px;
+  }
+
+  .chapter-experience .ci-progress {
+    left: 50%;
+    right: auto;
+    bottom: 24px;
+
+    width: 100px;
+    transform: translateX(-50%);
+  }
+}
+
+/* Small phones: hide the decorative label
+   rather than overlap the character controls. */
+
+@media (max-width: 390px) {
+  .chapter-experience .ci-chapter-identity {
+    display: none;
+  }
+}

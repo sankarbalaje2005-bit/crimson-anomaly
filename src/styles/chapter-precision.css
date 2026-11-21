@@ -1,0 +1,325 @@
+/* ==============================================
+   CRIMSON ANOMALY — PHASE 5F
+   PRECISION INTERACTION SYSTEM
+
+   Visual-only pointer lighting.
+   Navigation and zoom are untouched.
+
+   OBSIDIAN  #080808
+   SILVER    #CDCBCA
+   CRIMSON   #D41514
+============================================== */
+
+/* ==============================================
+   01. PRECISION LAYER
+============================================== */
+
+.chapter-precision-fx {
+  --pfx-x: 50%;
+  --pfx-y: 50%;
+
+  --pfx-intensity: 0.65;
+  --pfx-radius: 250px;
+
+  position: absolute;
+  inset: 0;
+
+  z-index: 20;
+
+  overflow: hidden;
+
+  pointer-events: none;
+  user-select: none;
+
+  opacity: 0;
+
+  transition: opacity 0.32s ease;
+}
+
+.chapter-precision-fx *,
+.chapter-precision-fx *::before,
+.chapter-precision-fx *::after {
+  pointer-events: none;
+}
+
+.chapter-precision-fx[data-precision-visible="true"] {
+  opacity: 1;
+}
+
+/* ==============================================
+   02. CURSOR FOLLOWING AMBIENT LIGHT
+============================================== */
+
+.pfx-cursor-glow {
+  position: absolute;
+
+  left: var(--pfx-x);
+  top: var(--pfx-y);
+
+  width: calc(var(--pfx-radius) * 2);
+  height: calc(var(--pfx-radius) * 2);
+
+  border-radius: 50%;
+
+  translate: -50% -50%;
+
+  background: radial-gradient(
+    circle,
+    rgba(212, 21, 20, 0.115) 0%,
+    rgba(212, 21, 20, 0.075) 22%,
+    rgba(212, 21, 20, 0.024) 50%,
+    transparent 73%
+  );
+
+  filter: blur(15px);
+
+  opacity: var(--pfx-intensity);
+
+  mix-blend-mode: screen;
+}
+
+/* ==============================================
+   03. SMALL SOFT FOCUS POINT
+============================================== */
+
+.pfx-cursor-core {
+  position: absolute;
+
+  left: var(--pfx-x);
+  top: var(--pfx-y);
+
+  width: 110px;
+  height: 110px;
+
+  border-radius: 50%;
+
+  translate: -50% -50%;
+
+  background: radial-gradient(
+    circle,
+    rgba(205, 203, 202, 0.07),
+    rgba(212, 21, 20, 0.025) 40%,
+    transparent 72%
+  );
+
+  filter: blur(8px);
+
+  opacity: 0.64;
+}
+
+/* ==============================================
+   04. FINE ATMOSPHERIC TEXTURE
+============================================== */
+
+.pfx-ambient-grain {
+  position: absolute;
+  inset: 0;
+
+  opacity: 0.1;
+
+  background-image: radial-gradient(
+    rgba(205, 203, 202, 0.08) 0.6px,
+    transparent 0.6px
+  );
+
+  background-size: 6px 6px;
+
+  mask-image: radial-gradient(circle at center, black 0%, transparent 77%);
+}
+
+/* ==============================================
+   05. SEVEN CHAPTER LIGHT PROFILES
+============================================== */
+
+/* 00 — Home
+   Keep the original Sentinel lighting dominant.
+*/
+
+.chapter-precision-fx[data-chapter="home"] {
+  --pfx-intensity: 0.17;
+  --pfx-radius: 190px;
+}
+
+.chapter-precision-fx[data-chapter="home"] .pfx-cursor-core {
+  opacity: 0.2;
+}
+
+/* 01 — About
+   A gentle broad signal glow.
+*/
+
+.chapter-precision-fx[data-chapter="about"] {
+  --pfx-intensity: 0.7;
+  --pfx-radius: 280px;
+}
+
+/* 02 — Skills
+   A more focused technical light.
+*/
+
+.chapter-precision-fx[data-chapter="skills"] {
+  --pfx-intensity: 0.77;
+  --pfx-radius: 215px;
+}
+
+/* 03 — Projects
+   Slightly brighter for artifact discovery.
+*/
+
+.chapter-precision-fx[data-chapter="projects"] {
+  --pfx-intensity: 0.88;
+  --pfx-radius: 230px;
+}
+
+/* 04 — Journey
+   Long and atmospheric.
+*/
+
+.chapter-precision-fx[data-chapter="journey"] {
+  --pfx-intensity: 0.63;
+  --pfx-radius: 290px;
+}
+
+/* 05 — Motion Lab
+   The strongest interactive response.
+*/
+
+.chapter-precision-fx[data-chapter="experimentation"] {
+  --pfx-intensity: 1;
+  --pfx-radius: 240px;
+}
+
+/* 06 — Contact
+   Calm, clear and inviting.
+*/
+
+.chapter-precision-fx[data-chapter="contact"] {
+  --pfx-intensity: 0.68;
+  --pfx-radius: 255px;
+}
+
+/* ==============================================
+   06. INTERACTIVE TARGET REFINEMENT
+
+   We use the data attribute provided by the
+   React component.
+
+   No position, width, height, or transform
+   changes on the existing cards.
+============================================== */
+
+.chapter-page [data-precision-active="true"] {
+  filter: brightness(1.09);
+}
+
+/* Skills */
+
+.chapter-page--skills .chapter-skill[data-precision-active="true"] {
+  border-color: rgba(212, 21, 20, 0.48);
+
+  box-shadow:
+    0 12px 36px rgba(0, 0, 0, 0.17),
+    inset 0 0 24px rgba(212, 21, 20, 0.045),
+    0 0 22px rgba(212, 21, 20, 0.055);
+}
+
+/* Projects */
+
+.chapter-page--projects .chapter-project[data-precision-active="true"] {
+  border-color: rgba(212, 21, 20, 0.44);
+
+  box-shadow:
+    0 0 25px rgba(212, 21, 20, 0.055),
+    inset 0 0 24px rgba(212, 21, 20, 0.04);
+}
+
+.chapter-page--projects
+  .chapter-project[data-precision-active="true"]
+  .chapter-project-title {
+  color: #f0eae8;
+}
+
+/* Motion Lab */
+
+.chapter-page--experimentation .button-primary[data-precision-active="true"] {
+  box-shadow:
+    0 0 20px rgba(212, 21, 20, 0.33),
+    0 0 50px rgba(212, 21, 20, 0.1);
+}
+
+/* Contact */
+
+.chapter-page--contact .chapter-contact-links a[data-precision-active="true"] {
+  border-color: rgba(212, 21, 20, 0.58);
+
+  box-shadow: 0 0 20px rgba(212, 21, 20, 0.13);
+}
+
+/* ==============================================
+   07. KEYBOARD FOCUS
+
+   Keyboard users receive a comparable visual
+   cue without needing a mouse.
+============================================== */
+
+.chapter-page .chapter-project:focus-visible,
+.chapter-page .chapter-contact-links a:focus-visible,
+.chapter-page .chapter-secondary-link:focus-visible,
+.chapter-page--experimentation .button-primary:focus-visible {
+  outline: 2px solid #d41514;
+  outline-offset: 5px;
+}
+
+/* ==============================================
+   08. POINTER INPUT RESTRICTIONS
+============================================== */
+
+@media (hover: none), (pointer: coarse) {
+  .chapter-precision-fx {
+    display: none;
+  }
+
+  .chapter-page [data-precision-active="true"] {
+    filter: none;
+  }
+}
+
+/* ==============================================
+   09. TABLET
+============================================== */
+
+@media (max-width: 1000px) {
+  .chapter-precision-fx {
+    --pfx-radius: 195px;
+  }
+
+  .pfx-cursor-core {
+    width: 85px;
+    height: 85px;
+  }
+}
+
+/* ==============================================
+   10. MOBILE
+============================================== */
+
+@media (max-width: 680px) {
+  .chapter-precision-fx {
+    display: none;
+  }
+}
+
+/* ==============================================
+   11. REDUCED MOTION
+============================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .chapter-precision-fx {
+    display: none;
+    transition: none;
+  }
+
+  .chapter-page [data-precision-active="true"] {
+    filter: none;
+  }
+}

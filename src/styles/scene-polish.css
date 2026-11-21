@@ -1,0 +1,856 @@
+/* ============================================
+   THE CRIMSON ANOMALY
+   PHASE 4B — CINEMATIC FINISHING SYSTEM
+
+   Obsidian: #080808
+   Silver:   #CDCBCA
+   Crimson:  #D41514
+============================================ */
+
+/* ============================================
+   01. GLOBAL DESIGN TOKENS
+============================================ */
+
+:root {
+  --scene-pointer-x: 50%;
+  --scene-pointer-y: 50%;
+
+  --scene-black: #080808;
+  --scene-silver: #cdcbca;
+  --scene-red: #d41514;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* ============================================
+   02. UNIVERSAL BACKLIGHT SYSTEM
+============================================ */
+
+.scene-light-system {
+  position: fixed;
+  inset: 0;
+
+  z-index: 15;
+  pointer-events: none;
+  overflow: hidden;
+
+  isolation: isolate;
+}
+
+.scene-ambient-light {
+  position: absolute;
+  inset: -15%;
+
+  background:
+    radial-gradient(
+      ellipse at 82% 65%,
+      rgba(212, 21, 20, 0.14),
+      transparent 42%
+    ),
+    radial-gradient(
+      ellipse at 10% 90%,
+      rgba(212, 21, 20, 0.06),
+      transparent 52%
+    );
+
+  animation: scene-ambient-breathe 8s ease-in-out infinite;
+}
+
+.scene-pointer-light {
+  position: absolute;
+  inset: 0;
+
+  background: radial-gradient(
+    360px circle at var(--scene-pointer-x) var(--scene-pointer-y),
+    rgba(212, 21, 20, 0.11),
+    rgba(212, 21, 20, 0.035) 38%,
+    transparent 75%
+  );
+
+  mix-blend-mode: screen;
+}
+
+.scene-edge-light {
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(212, 21, 20, 0.085),
+      transparent 15%,
+      transparent 85%,
+      rgba(212, 21, 20, 0.085)
+    ),
+    linear-gradient(180deg, transparent 75%, rgba(212, 21, 20, 0.055));
+
+  opacity: 0.65;
+}
+
+.scene-noise {
+  position: absolute;
+  inset: 0;
+
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 5px,
+    rgba(205, 203, 202, 0.012) 6px
+  );
+
+  opacity: 0.5;
+}
+
+/* ============================================
+   03. CLEAN HEADER
+============================================ */
+
+.site-header {
+  z-index: 200 !important;
+}
+
+.site-header a,
+.site-header button {
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+/* ============================================
+   04. HERO — TWO-COLUMN COMPOSITION
+============================================ */
+
+.chapter-page--home .sentinel-hero {
+  position: relative;
+  display: block;
+
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+
+  background: #080808;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Background character occupies the right side. */
+
+.chapter-page--home .sentinel-image-motion {
+  position: absolute;
+
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  width: 57%;
+  height: 100%;
+
+  z-index: 1;
+  pointer-events: none;
+}
+
+.chapter-page--home .sentinel-image-window {
+  position: absolute;
+  inset: 0;
+
+  overflow: hidden;
+
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0, 0, 0, 0.65) 15%,
+    black 37%
+  );
+}
+
+.chapter-page--home .sentinel-image-float {
+  position: absolute;
+  inset: 0;
+}
+
+.chapter-page--home .sentinel-character {
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: 50% 30%;
+
+  filter: contrast(1.05) saturate(1.08);
+
+  max-width: none;
+}
+
+/* Prevent old container layout from
+   boxing in the hero headline. */
+
+.chapter-page--home .sentinel-copy.container {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: auto;
+  bottom: 0;
+
+  width: 100%;
+  max-width: none;
+  min-height: 0;
+
+  margin: 0;
+  padding: clamp(100px, 13vh, 140px) clamp(36px, 6vw, 110px) 85px;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  z-index: 5;
+
+  border: 0;
+  outline: 0;
+  box-shadow: none;
+
+  background: transparent;
+  pointer-events: none;
+}
+
+.chapter-page--home .sentinel-copy-inner {
+  width: min(44vw, 670px);
+  max-width: 100%;
+
+  margin: 0;
+  padding: 0;
+
+  border: 0;
+  outline: 0;
+  box-shadow: none;
+
+  background: transparent;
+}
+
+.chapter-page--home .sentinel-title {
+  width: max-content;
+  max-width: 100%;
+
+  margin: 23px 0 25px;
+  padding: 0;
+
+  font-size: clamp(66px, 6.4vw, 113px);
+  line-height: 0.94;
+  font-weight: 650;
+  letter-spacing: -0.078em;
+
+  color: #e8e5e3;
+
+  border: 0;
+  outline: 0;
+  box-shadow: none;
+
+  text-shadow: 0 9px 32px rgba(0, 0, 0, 0.45);
+}
+
+.chapter-page--home .sentinel-title > span {
+  color: #bbb7b5;
+}
+
+.chapter-page--home .hero-role {
+  width: fit-content;
+  max-width: 100%;
+
+  margin: 0 0 20px;
+
+  font-size: clamp(10px, 0.85vw, 13px);
+  line-height: 1.7;
+  letter-spacing: 0.07em;
+
+  color: #ddd8d6;
+}
+
+.chapter-page--home .hero-tagline {
+  max-width: 420px;
+
+  margin: 0;
+
+  font-size: clamp(14px, 1.12vw, 17px);
+  line-height: 1.75;
+
+  color: #a9a2a0;
+}
+
+.chapter-page--home .eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin: 0;
+
+  font-size: 9px;
+  letter-spacing: 0.15em;
+
+  color: #baaaa7;
+}
+
+.chapter-page--home .hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+  gap: 13px;
+  margin-top: 33px;
+}
+
+.chapter-page--home .hero-actions button,
+.chapter-page--home .hero-actions a {
+  pointer-events: auto;
+
+  min-height: 48px;
+  padding: 14px 20px;
+
+  font-size: 10px;
+  white-space: nowrap;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.chapter-page--home .hero-actions button:hover,
+.chapter-page--home .hero-actions a:hover {
+  transform: translateY(-3px);
+}
+
+.chapter-page--home .sentinel-status {
+  margin-top: 32px;
+
+  font-size: 9px;
+  letter-spacing: 0.13em;
+
+  color: #9f9794;
+}
+
+/* ============================================
+   05. FIX HOLOGRAPHIC PANEL OVERLAP
+============================================ */
+
+.chapter-page--home .sentinel-hud-layer {
+  position: absolute;
+  inset: 0;
+
+  z-index: 7;
+  pointer-events: none;
+}
+
+.chapter-page--home .sentinel-hud-panel {
+  position: absolute;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 200px;
+  max-width: 200px;
+
+  padding: 16px 17px;
+  margin: 0;
+
+  border: 1px solid rgba(212, 21, 20, 0.27);
+  border-radius: 9px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(24, 16, 17, 0.88),
+    rgba(8, 8, 8, 0.7)
+  );
+
+  box-shadow:
+    0 14px 45px rgba(0, 0, 0, 0.28),
+    0 0 35px rgba(212, 21, 20, 0.06);
+
+  backdrop-filter: blur(13px);
+
+  color: #cdcbca;
+  text-align: left;
+
+  pointer-events: none;
+}
+
+.chapter-page--home .hud-top {
+  top: 24%;
+  right: 3%;
+  left: auto;
+  bottom: auto;
+}
+
+.chapter-page--home .hud-bottom {
+  top: auto;
+  bottom: 14%;
+  right: 3%;
+  left: auto;
+}
+
+.chapter-page--home .hud-overline {
+  display: block;
+
+  margin: 0 0 10px;
+
+  font-family: "DM Mono", monospace;
+  font-size: 9px;
+  line-height: 1.45;
+  letter-spacing: 0.08em;
+
+  color: #e04743;
+}
+
+.chapter-page--home .sentinel-hud-panel strong {
+  display: block;
+
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.015em;
+
+  color: #e2dedc;
+}
+
+.chapter-page--home .hud-detail {
+  display: block;
+
+  margin-top: 8px;
+
+  font-family: "DM Mono", monospace;
+  font-size: 8px;
+  line-height: 1.5;
+  letter-spacing: 0.055em;
+
+  color: #a59d9a;
+}
+
+.chapter-page--home .sentinel-core-panel {
+  position: absolute;
+
+  top: 98px;
+  right: 3%;
+  left: auto;
+
+  width: 200px;
+
+  padding: 12px 15px;
+  margin: 0;
+
+  border-left: 2px solid #d41514;
+  border-radius: 4px;
+
+  background: rgba(8, 8, 8, 0.83);
+  backdrop-filter: blur(12px);
+
+  pointer-events: auto;
+}
+
+.chapter-page--home .sentinel-core-button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  padding: 5px 0;
+
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+
+  font-family: "DM Mono", monospace;
+  font-size: 9px;
+  color: #cdcbca;
+}
+
+.chapter-page--home .sentinel-target-ring {
+  z-index: -1;
+  right: 11%;
+  top: 18%;
+  opacity: 0.35;
+}
+
+/* Stop ornamental overlays blocking text. */
+
+.chapter-page--home .sentinel-image-motion,
+.chapter-page--home .sentinel-energy-beam,
+.chapter-page--home .sentinel-atmosphere,
+.chapter-page--home .sentinel-grid {
+  pointer-events: none;
+}
+
+/* ============================================
+   06. OTHER CHAPTERS — BREATHING ROOM
+============================================ */
+
+.chapter-page:not(.chapter-page--home) .chapter-content {
+  width: min(1150px, calc(100% - 160px));
+
+  padding-top: 140px;
+  padding-bottom: 110px;
+}
+
+.chapter-page:not(.chapter-page--home) .chapter-content h2 {
+  font-size: clamp(42px, 5.3vw, 86px);
+  line-height: 1.04;
+  letter-spacing: -0.063em;
+
+  margin-bottom: 15px;
+}
+
+.chapter-page:not(.chapter-page--home) .chapter-lead {
+  margin: 23px 0 35px;
+  max-width: 610px;
+}
+
+.chapter-columns {
+  gap: clamp(32px, 5vw, 90px);
+  margin-top: 30px;
+}
+
+.chapter-description {
+  max-width: 540px;
+}
+
+.chapter-skills {
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.chapter-skill {
+  border-radius: 10px;
+
+  background: linear-gradient(
+    145deg,
+    rgba(28, 25, 25, 0.94),
+    rgba(12, 12, 12, 0.96)
+  );
+
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.13);
+}
+
+.chapter-project-list {
+  margin-top: 30px;
+}
+
+.chapter-project {
+  border-radius: 5px;
+}
+
+.chapter-project:hover {
+  background: rgba(212, 21, 20, 0.075);
+}
+
+.chapter-visual {
+  border-radius: 13px;
+
+  box-shadow:
+    inset 0 0 60px rgba(212, 21, 20, 0.055),
+    0 25px 65px rgba(0, 0, 0, 0.22);
+}
+
+/* ============================================
+   07. SOFT BACKLIGHT ON EVERY CHAPTER
+============================================ */
+
+.chapter-page:not(.chapter-page--home)::before {
+  background:
+    radial-gradient(
+      ellipse at 78% 55%,
+      rgba(212, 21, 20, 0.13),
+      transparent 46%
+    ),
+    radial-gradient(
+      ellipse at 15% 85%,
+      rgba(212, 21, 20, 0.045),
+      transparent 48%
+    ),
+    linear-gradient(rgba(205, 203, 202, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(205, 203, 202, 0.025) 1px, transparent 1px);
+
+  background-size:
+    auto,
+    auto,
+    92px 92px,
+    92px 92px;
+}
+
+/* Maintain readable project and lab pages. */
+
+.route-scene--page {
+  background: #080808;
+}
+
+.route-scene--page::before {
+  background:
+    radial-gradient(
+      ellipse at 80% 35%,
+      rgba(212, 21, 20, 0.13),
+      transparent 45%
+    ),
+    radial-gradient(
+      ellipse at 10% 80%,
+      rgba(212, 21, 20, 0.055),
+      transparent 55%
+    );
+}
+
+/* ============================================
+   08. REFINED CHAPTER NAVIGATION
+============================================ */
+
+.chapter-nav {
+  gap: 11px;
+  right: 19px;
+}
+
+.chapter-dot {
+  width: 30px;
+  height: 30px;
+}
+
+.chapter-dot span {
+  width: 5px;
+  height: 5px;
+}
+
+.chapter-dot.is-active span {
+  transform: scale(1.9);
+
+  box-shadow:
+    0 0 12px #d41514,
+    0 0 25px rgba(212, 21, 20, 0.4);
+}
+
+.chapter-direction-controls button {
+  border-radius: 7px;
+}
+
+.chapter-direction-controls button:hover:not(:disabled) {
+  box-shadow: 0 0 20px rgba(212, 21, 20, 0.3);
+}
+
+/* ============================================
+   09. ANIMATIONS
+============================================ */
+
+@keyframes scene-ambient-breathe {
+  0%,
+  100% {
+    opacity: 0.65;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+/* ============================================
+   10. LAPTOP / SMALL DESKTOP
+============================================ */
+
+@media (max-width: 1200px) {
+  .chapter-page--home .sentinel-image-motion {
+    width: 61%;
+  }
+
+  .chapter-page--home .sentinel-title {
+    font-size: clamp(58px, 6.2vw, 88px);
+  }
+
+  .chapter-page--home .sentinel-copy-inner {
+    width: min(46vw, 590px);
+  }
+
+  .chapter-page--home .sentinel-hud-panel {
+    width: 165px;
+  }
+
+  .chapter-page--home .sentinel-core-panel {
+    width: 165px;
+  }
+
+  .chapter-page:not(.chapter-page--home) .chapter-content {
+    width: min(1100px, calc(100% - 110px));
+  }
+}
+
+/* ============================================
+   11. TABLET
+============================================ */
+
+@media (max-width: 900px) {
+  .chapter-page--home .sentinel-image-motion {
+    width: 66%;
+  }
+
+  .chapter-page--home .sentinel-title {
+    font-size: clamp(54px, 6.3vw, 75px);
+  }
+
+  .chapter-page--home .sentinel-copy-inner {
+    width: 49vw;
+  }
+
+  .chapter-page--home .sentinel-hud-panel {
+    display: none;
+  }
+
+  .chapter-page--home .sentinel-target-ring {
+    display: none;
+  }
+
+  .chapter-page--home .sentinel-core-panel {
+    right: 20px;
+    top: 92px;
+  }
+
+  .chapter-page:not(.chapter-page--home) .chapter-content {
+    width: calc(100% - 90px);
+  }
+}
+
+/* ============================================
+   12. MOBILE
+============================================ */
+
+@media (max-width: 680px) {
+  .chapter-page--home .sentinel-hero {
+    min-height: 850px;
+    height: auto;
+  }
+
+  .chapter-page--home .sentinel-image-motion {
+    top: 62px;
+    bottom: auto;
+    right: 0;
+
+    width: 100%;
+    height: 455px;
+  }
+
+  .chapter-page--home .sentinel-image-window {
+    mask-image: linear-gradient(
+      to bottom,
+      black 0%,
+      black 58%,
+      transparent 100%
+    );
+  }
+
+  .chapter-page--home .sentinel-character {
+    object-position: center 24%;
+  }
+
+  .chapter-page--home .sentinel-copy.container {
+    position: relative;
+    inset: auto;
+
+    display: block;
+
+    width: 100%;
+    min-height: 0;
+
+    padding: 465px 24px 95px;
+  }
+
+  .chapter-page--home .sentinel-copy-inner {
+    width: 100%;
+    max-width: 460px;
+  }
+
+  .chapter-page--home .sentinel-title {
+    font-size: clamp(54px, 12.5vw, 75px);
+    line-height: 0.97;
+    margin: 16px 0 22px;
+  }
+
+  .chapter-page--home .hero-role {
+    font-size: 10px;
+  }
+
+  .chapter-page--home .hero-tagline {
+    font-size: 13px;
+  }
+
+  .chapter-page--home .hero-actions {
+    margin-top: 22px;
+    gap: 10px;
+  }
+
+  .chapter-page--home .hero-actions button,
+  .chapter-page--home .hero-actions a {
+    min-height: 43px;
+    padding: 11px 13px;
+    font-size: 9px;
+  }
+
+  .chapter-page--home .sentinel-core-panel {
+    top: 75px;
+    right: 15px;
+    width: 145px;
+  }
+
+  .chapter-page--home .sentinel-hud-panel,
+  .chapter-page--home .sentinel-target-ring {
+    display: none;
+  }
+
+  .chapter-page:not(.chapter-page--home) .chapter-content {
+    width: calc(100% - 48px);
+
+    padding-top: 112px;
+    padding-bottom: 100px;
+  }
+
+  .chapter-page:not(.chapter-page--home) .chapter-content h2 {
+    font-size: clamp(35px, 8.8vw, 56px);
+  }
+
+  .chapter-skills {
+    gap: 10px;
+  }
+
+  .chapter-nav {
+    right: 4px;
+  }
+}
+
+/* ============================================
+   13. SMALL MOBILE
+============================================ */
+
+@media (max-width: 390px) {
+  .chapter-page--home .sentinel-image-motion {
+    height: 415px;
+  }
+
+  .chapter-page--home .sentinel-copy.container {
+    padding-top: 430px;
+  }
+
+  .chapter-page--home .sentinel-title {
+    font-size: 12.4vw;
+  }
+
+  .chapter-page:not(.chapter-page--home) .chapter-content {
+    width: calc(100% - 38px);
+  }
+}
+
+/* ============================================
+   14. ACCESSIBILITY
+============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-ambient-light {
+    animation: none;
+  }
+
+  .scene-pointer-light {
+    display: none;
+  }
+}

@@ -1,0 +1,477 @@
+/* =============================================
+   CRIMSON ANOMALY — PHASE 5B
+   REACTIVE 2.5D SENTINEL MOTION
+
+   Additive effects only.
+   Do not override Motion's route/chapter zoom.
+============================================= */
+
+/* =============================================
+   01. INDEPENDENT MOTION VARIABLES
+============================================= */
+
+.sentinel-hero {
+  --sfx-character-x: 0px;
+  --sfx-character-y: 0px;
+  --sfx-character-rotate: 0deg;
+
+  --sfx-shift-x: 0px;
+  --sfx-shift-y: 0px;
+
+  --sfx-cursor-x: 60%;
+  --sfx-cursor-y: 40%;
+
+  --sfx-energy: 0;
+}
+
+/* =============================================
+   02. CHARACTER MOTION
+
+   The existing floating animation uses
+   transform. We use the independent CSS
+   translate and rotate properties so both
+   effects can run together.
+============================================= */
+
+.chapter-page--home .sentinel-image-float {
+  translate: var(--sfx-character-x) var(--sfx-character-y);
+
+  rotate: var(--sfx-character-rotate);
+
+  transform-origin: 50% 50%;
+}
+
+/* Preserve the original character image.
+   This rule only improves rendering quality. */
+
+.chapter-page--home .sentinel-character {
+  backface-visibility: hidden;
+}
+
+/* =============================================
+   03. CINEMATIC EFFECTS CONTAINER
+============================================= */
+
+.sentinel-hero .sfx-layer {
+  position: absolute;
+
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  width: 59%;
+  height: 100%;
+
+  z-index: 3;
+
+  overflow: hidden;
+  pointer-events: none;
+
+  isolation: isolate;
+
+  opacity: 1;
+}
+
+/* =============================================
+   04. REACTIVE REACTOR BACKLIGHT
+============================================= */
+
+.sfx-reactor-halo {
+  position: absolute;
+
+  top: 16%;
+  right: 10%;
+
+  width: 78%;
+  height: 68%;
+
+  border-radius: 50%;
+
+  background: radial-gradient(
+    ellipse,
+    rgba(212, 21, 20, 0.24) 0%,
+    rgba(212, 21, 20, 0.1) 28%,
+    rgba(212, 21, 20, 0.035) 52%,
+    transparent 75%
+  );
+
+  filter: blur(42px);
+
+  opacity: calc(0.34 + var(--sfx-energy) * 0.48);
+
+  transform: scale(calc(0.96 + var(--sfx-energy) * 0.13));
+
+  mix-blend-mode: screen;
+}
+
+/* =============================================
+   05. CURSOR FOLLOWING LIGHT
+============================================= */
+
+.sfx-tracking-light {
+  position: absolute;
+  inset: 0;
+
+  z-index: 2;
+
+  background: radial-gradient(
+    240px circle at var(--sfx-cursor-x) var(--sfx-cursor-y),
+    rgba(255, 44, 39, 0.125),
+    rgba(212, 21, 20, 0.055) 36%,
+    transparent 72%
+  );
+
+  mix-blend-mode: screen;
+
+  opacity: 0.75;
+}
+
+/* =============================================
+   06. VERTICAL LIGHT COLUMN
+============================================= */
+
+.sfx-light-column {
+  position: absolute;
+
+  top: -12%;
+  right: 27%;
+
+  width: 25%;
+  height: 124%;
+
+  z-index: 1;
+
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(212, 21, 20, 0.025) 33%,
+    rgba(212, 21, 20, 0.1) 50%,
+    rgba(212, 21, 20, 0.025) 66%,
+    transparent 100%
+  );
+
+  filter: blur(25px);
+
+  translate: var(--sfx-shift-x) var(--sfx-shift-y);
+
+  opacity: 0.75;
+}
+
+/* =============================================
+   07. FUTURISTIC ENERGY TRACES
+============================================= */
+
+.sfx-energy-field {
+  position: absolute;
+  inset: 0;
+
+  z-index: 3;
+
+  translate: var(--sfx-shift-x) var(--sfx-shift-y);
+
+  opacity: calc(0.3 + var(--sfx-energy) * 0.48);
+}
+
+.sfx-energy-line {
+  position: absolute;
+
+  display: block;
+
+  width: 1px;
+
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(212, 21, 20, 0.6),
+    transparent
+  );
+
+  box-shadow:
+    0 0 8px rgba(212, 21, 20, 0.6),
+    0 0 22px rgba(212, 21, 20, 0.23);
+}
+
+.sfx-line-one {
+  top: 10%;
+  right: 22%;
+  height: 38%;
+
+  transform: rotate(13deg);
+}
+
+.sfx-line-two {
+  top: 35%;
+  right: 55%;
+  height: 24%;
+
+  transform: rotate(-10deg);
+}
+
+.sfx-line-three {
+  bottom: 9%;
+  right: 11%;
+  height: 35%;
+
+  transform: rotate(8deg);
+}
+
+/* =============================================
+   08. ANIMATED SCANNING BEAM
+============================================= */
+
+.sfx-scan-beam {
+  position: absolute;
+
+  left: 6%;
+  right: 6%;
+  top: 0;
+
+  height: 1px;
+
+  z-index: 4;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(212, 21, 20, 0.42),
+    rgba(255, 83, 76, 0.58),
+    rgba(212, 21, 20, 0.42),
+    transparent
+  );
+
+  box-shadow: 0 0 10px rgba(212, 21, 20, 0.4);
+
+  opacity: 0;
+
+  animation: sfx-scan 8s ease-in-out infinite;
+}
+
+/* =============================================
+   09. MINIMAL HOLOGRAPHIC FRAME
+============================================= */
+
+.sfx-corner {
+  position: absolute;
+
+  z-index: 4;
+
+  width: 42px;
+  height: 42px;
+
+  border-color: rgba(212, 21, 20, 0.42);
+  border-style: solid;
+
+  opacity: 0.5;
+}
+
+.sfx-corner-top {
+  top: 16%;
+  left: 20%;
+
+  border-width: 1px 0 0 1px;
+}
+
+.sfx-corner-bottom {
+  bottom: 16%;
+  right: 15%;
+
+  border-width: 0 1px 1px 0;
+}
+
+/* =============================================
+   10. SCROLL ENERGY SIGNAL
+============================================= */
+
+.sfx-scroll-signal {
+  position: absolute;
+
+  left: 12%;
+  bottom: 9%;
+
+  width: 80px;
+  height: 2px;
+
+  z-index: 4;
+
+  background: linear-gradient(90deg, #d41514, rgba(212, 21, 20, 0.08));
+
+  box-shadow: 0 0 15px rgba(212, 21, 20, 0.5);
+
+  opacity: calc(0.18 + var(--sfx-energy) * 0.65);
+
+  transform-origin: left center;
+
+  scale: calc(0.5 + var(--sfx-energy) * 0.8) 1;
+}
+
+/* =============================================
+   11. EXTRA RESPONSE TO GLOW BOOST
+============================================= */
+
+.sentinel-boosted .sfx-reactor-halo {
+  background: radial-gradient(
+    ellipse,
+    rgba(212, 21, 20, 0.43),
+    rgba(212, 21, 20, 0.16) 36%,
+    transparent 75%
+  );
+}
+
+.sentinel-boosted .sfx-energy-field {
+  filter: drop-shadow(0 0 8px rgba(212, 21, 20, 0.45));
+}
+
+.sentinel-boosted .sfx-tracking-light {
+  opacity: 1;
+}
+
+/* =============================================
+   12. ENTRANCE TRANSITION
+
+   Existing chapter zoom remains in charge.
+============================================= */
+
+.sentinel-entering .sfx-layer {
+  opacity: 0.2;
+
+  transition: opacity 0.45s ease;
+}
+
+/* =============================================
+   13. KEYFRAMES
+============================================= */
+
+@keyframes sfx-scan {
+  0% {
+    top: 6%;
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 0.55;
+  }
+
+  45% {
+    top: 78%;
+    opacity: 0.38;
+  }
+
+  55% {
+    opacity: 0;
+  }
+
+  100% {
+    top: 78%;
+    opacity: 0;
+  }
+}
+
+/* =============================================
+   14. LAPTOP
+============================================= */
+
+@media (max-width: 1200px) {
+  .sentinel-hero .sfx-layer {
+    width: 63%;
+  }
+
+  .sfx-corner-top {
+    left: 15%;
+  }
+}
+
+/* =============================================
+   15. TABLET
+============================================= */
+
+@media (max-width: 900px) {
+  .sentinel-hero .sfx-layer {
+    width: 66%;
+  }
+
+  .sfx-corner {
+    opacity: 0.25;
+  }
+}
+
+/* =============================================
+   16. MOBILE
+============================================= */
+
+@media (max-width: 680px) {
+  .sentinel-hero .sfx-layer {
+    top: 62px;
+    bottom: auto;
+
+    width: 100%;
+    height: 455px;
+  }
+
+  .sfx-reactor-halo {
+    top: 8%;
+    right: 9%;
+
+    width: 82%;
+    height: 75%;
+
+    filter: blur(30px);
+  }
+
+  .sfx-tracking-light,
+  .sfx-energy-field,
+  .sfx-corner {
+    display: none;
+  }
+
+  .sfx-light-column {
+    opacity: 0.25;
+  }
+
+  .sfx-scan-beam {
+    opacity: 0;
+  }
+
+  .sfx-scroll-signal {
+    display: none;
+  }
+}
+
+@media (max-width: 390px) {
+  .sentinel-hero .sfx-layer {
+    height: 415px;
+  }
+}
+
+/* =============================================
+   17. REDUCED MOTION
+============================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .chapter-page--home .sentinel-image-float {
+    translate: 0 0;
+    rotate: 0deg;
+  }
+
+  .sfx-scan-beam {
+    display: none;
+  }
+
+  .sfx-reactor-halo {
+    transform: none;
+    opacity: 0.28;
+  }
+
+  .sfx-light-column,
+  .sfx-energy-field {
+    translate: 0 0;
+  }
+
+  .sfx-scroll-signal {
+    opacity: 0.2;
+    scale: 1;
+  }
+
+  .sentinel-entering .sfx-layer {
+    transition: none;
+  }
+}

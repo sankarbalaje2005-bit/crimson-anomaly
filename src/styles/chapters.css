@@ -1,0 +1,974 @@
+/* ==================================================
+   SANKAR BALAJE — THE CRIMSON ANOMALY
+   PHASE 4 — FULL-SCREEN CINEMATIC CHAPTERS
+
+   React + Vite + Tailwind CSS v4
+   Motion handles zoom transitions.
+   CSS handles the full-screen chapter layout.
+================================================== */
+
+/* ==================================================
+   01. FULL-SCREEN VIEWPORT
+================================================== */
+
+body:has(.chapter-experience) {
+  height: 100dvh;
+  overflow: hidden;
+}
+
+body:has(.chapter-experience) .site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 200;
+}
+
+body:has(.chapter-experience) .site-footer {
+  display: none;
+}
+
+.chapter-experience {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+  isolation: isolate;
+
+  background: #080808;
+}
+
+/* ==================================================
+   02. CINEMATIC STAGE
+================================================== */
+
+.chapter-stage {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+  perspective: 1400px;
+
+  background: #080808;
+}
+
+.chapter-page {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  transform-origin: center center;
+  backface-visibility: hidden;
+
+  background: #080808;
+}
+
+/* Atmospheric crimson light */
+
+.chapter-page::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  z-index: 0;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      ellipse at 82% 72%,
+      rgba(212, 21, 20, 0.12),
+      transparent 58%
+    ),
+    linear-gradient(rgba(205, 203, 202, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(205, 203, 202, 0.025) 1px, transparent 1px);
+
+  background-size:
+    auto,
+    90px 90px,
+    90px 90px;
+}
+
+/* ==================================================
+   03. INTERNAL CONTENT SCROLL
+================================================== */
+
+.chapter-inner-scroll {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  overscroll-behavior: contain;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.chapter-inner-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* ==================================================
+   04. CONTENT LAYOUT
+================================================== */
+
+.chapter-content {
+  position: relative;
+  z-index: 2;
+
+  width: min(1300px, 88vw);
+
+  margin: auto;
+  padding: 115px 0 65px;
+}
+
+.chapter-eyebrow {
+  display: block;
+
+  margin-bottom: 27px;
+
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  font-weight: 400;
+
+  letter-spacing: 0.23em;
+
+  color: #d41514;
+}
+
+.chapter-content h2 {
+  max-width: 1250px;
+
+  margin: 0;
+
+  font-size: clamp(46px, 6.3vw, 108px);
+  font-weight: 600;
+  line-height: 0.96;
+  letter-spacing: -0.075em;
+
+  color: #e1dfde;
+}
+
+.chapter-content h2 span {
+  color: #979391;
+}
+
+.chapter-lead {
+  max-width: 590px;
+
+  margin: 32px 0;
+
+  font-size: clamp(15px, 1.4vw, 19px);
+  line-height: 1.7;
+
+  color: #aaa4a2;
+}
+
+.chapter-muted {
+  color: #858080 !important;
+}
+
+/* ==================================================
+   05. ABOUT — THE SIGNAL
+================================================== */
+
+.chapter-columns {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  align-items: center;
+  gap: 6vw;
+
+  margin-top: 48px;
+}
+
+.chapter-visual {
+  position: relative;
+
+  height: clamp(200px, 25vw, 350px);
+
+  display: grid;
+  place-items: center;
+
+  overflow: hidden;
+
+  border: 1px solid #322929;
+  background: #111111;
+}
+
+.chapter-geometric-core {
+  width: 135px;
+  height: 135px;
+
+  background: linear-gradient(130deg, #d41514, #3a0b0b 58%, #0c0c0c);
+
+  transform: rotate(45deg);
+
+  box-shadow:
+    0 0 45px rgba(212, 21, 20, 0.25),
+    0 0 100px rgba(212, 21, 20, 0.3);
+}
+
+.chapter-visual > span {
+  position: absolute;
+
+  left: 20px;
+  bottom: 20px;
+
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+
+  letter-spacing: 0.12em;
+
+  color: #cdcbca;
+}
+
+.chapter-description {
+  font-size: clamp(16px, 1.5vw, 21px);
+  line-height: 1.6;
+
+  color: #cdcbca;
+}
+
+.chapter-description p {
+  margin: 0 0 20px;
+}
+
+/* ==================================================
+   06. SKILLS — THE ARCHITECTURE
+================================================== */
+
+.chapter-skills {
+  display: grid;
+
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  gap: 12px;
+  margin-top: 40px;
+}
+
+.chapter-skill {
+  min-height: 215px;
+
+  padding: 25px;
+
+  border: 1px solid #363030;
+  background: #131313;
+
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    transform 0.25s ease;
+}
+
+.chapter-skill:hover {
+  border-color: #d41514;
+  background: #191212;
+
+  transform: translateY(-5px);
+}
+
+.chapter-card-number {
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+
+  color: #d41514;
+}
+
+.chapter-skill h3 {
+  margin: 25px 0 16px;
+
+  font-size: 23px;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+
+  color: #cdcbca;
+}
+
+.chapter-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chapter-tags span {
+  padding: 6px 8px;
+
+  font-size: 11px;
+
+  color: #aaa;
+  border: 1px solid #393939;
+}
+
+/* ==================================================
+   07. PROJECTS — THE ARTIFACTS
+================================================== */
+
+.chapter-project-list {
+  margin-top: 38px;
+
+  border-top: 1px solid #383333;
+}
+
+.chapter-project {
+  display: grid;
+
+  grid-template-columns: 50px 1fr 30px;
+  gap: 20px;
+
+  align-items: center;
+
+  min-height: 86px;
+  padding: 12px 10px;
+
+  border-bottom: 1px solid #383333;
+
+  transition:
+    background 0.25s ease,
+    padding 0.25s ease;
+}
+
+.chapter-project:hover {
+  background: #201010;
+  padding-inline: 22px;
+}
+
+.chapter-project-title {
+  font-size: clamp(19px, 2.1vw, 31px);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+
+  color: #cdcbca;
+}
+
+.chapter-project-title small {
+  display: block;
+
+  margin-top: 4px;
+
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0;
+
+  color: #8c8583;
+}
+
+.chapter-project-arrow {
+  font-size: 24px;
+  color: #d41514;
+}
+
+/* ==================================================
+   08. JOURNEY — THE TRAJECTORY
+================================================== */
+
+.chapter-journey {
+  display: grid;
+
+  grid-template-columns: 0.4fr 1fr;
+  gap: 5vw;
+
+  margin-top: 65px;
+  padding-top: 30px;
+
+  border-top: 1px solid #d41514;
+}
+
+.chapter-year {
+  font-family: "DM Mono", monospace;
+  font-size: 14px;
+
+  color: #d41514;
+}
+
+.chapter-journey h3 {
+  margin: 0 0 12px;
+
+  font-size: clamp(25px, 3vw, 44px);
+  font-weight: 500;
+
+  letter-spacing: -0.05em;
+
+  color: #cdcbca;
+}
+
+.chapter-journey p {
+  color: #aaa;
+}
+
+/* ==================================================
+   09. MOTION LAB — EXPERIMENTATION
+================================================== */
+
+.experiment-chapter .button-primary {
+  margin-top: 14px;
+}
+
+.chapter-secondary-link {
+  display: block;
+  width: fit-content;
+
+  margin-top: 26px;
+
+  font-size: 13px;
+  color: #aaa;
+
+  transition: color 0.2s ease;
+}
+
+.chapter-secondary-link:hover {
+  color: #d41514;
+}
+
+/* ==================================================
+   10. CONTACT — TRANSMISSION
+================================================== */
+
+.chapter-contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+
+  margin-top: 40px;
+}
+
+.chapter-signature {
+  margin-top: 75px;
+
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+
+  letter-spacing: 0.2em;
+
+  color: #79716f;
+}
+
+/* ==================================================
+   11. RIGHT SIDE NAVIGATION DOTS
+================================================== */
+
+.chapter-nav {
+  position: fixed;
+
+  top: 50%;
+  right: 25px;
+
+  z-index: 95;
+
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  transform: translateY(-50%);
+}
+
+.chapter-dot {
+  display: grid;
+  place-items: center;
+
+  width: 28px;
+  height: 28px;
+
+  padding: 0;
+
+  border: none;
+  background: transparent;
+
+  cursor: pointer;
+}
+
+.chapter-dot span {
+  display: block;
+
+  width: 5px;
+  height: 5px;
+
+  border-radius: 50%;
+
+  background: #8b8583;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.chapter-dot.is-active span {
+  background: #d41514;
+
+  transform: scale(1.75);
+
+  box-shadow: 0 0 12px #d41514;
+}
+
+.chapter-dot:hover span {
+  background: #ffffff;
+
+  transform: scale(1.5);
+}
+
+/* ==================================================
+   12. CHAPTER COUNTER
+================================================== */
+
+.chapter-counter {
+  position: fixed;
+
+  left: 4vw;
+  bottom: 25px;
+
+  z-index: 90;
+
+  display: flex;
+  gap: 9px;
+
+  font-family: "DM Mono", monospace;
+  font-size: 12px;
+
+  color: #cdcbca;
+}
+
+.chapter-counter > span:first-child {
+  color: #d41514;
+}
+
+.chapter-counter-divider {
+  color: #575252;
+}
+
+/* ==================================================
+   13. PREVIOUS / NEXT BUTTONS
+================================================== */
+
+.chapter-direction-controls {
+  position: fixed;
+
+  right: 24px;
+  bottom: 25px;
+
+  z-index: 95;
+
+  display: flex;
+  gap: 7px;
+}
+
+.chapter-direction-controls button {
+  width: 39px;
+  height: 39px;
+
+  border: 1px solid #51403f;
+  background: #131111;
+
+  font-family: "DM Mono", monospace;
+  font-size: 18px;
+
+  color: #cdcbca;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.chapter-direction-controls button:hover:not(:disabled) {
+  background: #d41514;
+  border-color: #d41514;
+}
+
+.chapter-direction-controls button:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+/* ==================================================
+   14. CRIMSON SENTINEL HOMEPAGE
+================================================== */
+
+.chapter-page--home .sentinel-hero {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  min-height: 100%;
+  max-height: none;
+}
+
+.chapter-page--home .hero-content {
+  flex-shrink: 0;
+}
+
+.chapter-page--home .sentinel-scroll {
+  position: absolute;
+
+  cursor: pointer;
+  border: none;
+  background: transparent;
+
+  padding: 0;
+
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+
+  color: #cdcbca;
+}
+
+.chapter-page--home .sentinel-scroll:hover {
+  color: #d41514;
+}
+
+.chapter-page--home .sentinel-side-label {
+  display: none;
+}
+
+/* ==================================================
+   15. TABLET
+================================================== */
+
+@media (max-width: 900px) {
+  .chapter-content {
+    width: calc(100% - 90px);
+  }
+
+  .chapter-content h2 {
+    font-size: clamp(40px, 7.5vw, 76px);
+  }
+
+  .chapter-skills {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ==================================================
+   16. MOBILE
+================================================== */
+
+@media (max-width: 680px) {
+  .chapter-content {
+    width: calc(100% - 42px);
+
+    padding-top: 110px;
+    padding-bottom: 95px;
+  }
+
+  .chapter-content h2 {
+    font-size: clamp(36px, 9.1vw, 59px);
+    overflow-wrap: anywhere;
+  }
+
+  .chapter-eyebrow {
+    font-size: 9px;
+  }
+
+  .chapter-columns,
+  .chapter-journey {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .chapter-columns {
+    margin-top: 28px;
+  }
+
+  .chapter-visual {
+    height: 175px;
+  }
+
+  .chapter-geometric-core {
+    width: 78px;
+    height: 78px;
+  }
+
+  .chapter-description {
+    font-size: 15px;
+  }
+
+  .chapter-skills {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .chapter-skill {
+    min-height: 180px;
+    padding: 15px;
+  }
+
+  .chapter-skill h3 {
+    margin: 18px 0 12px;
+    font-size: 18px;
+  }
+
+  .chapter-tags span {
+    padding: 5px;
+    font-size: 10px;
+  }
+
+  .chapter-project {
+    grid-template-columns: 23px 1fr 18px;
+    gap: 10px;
+
+    min-height: 86px;
+  }
+
+  .chapter-project-title {
+    font-size: 20px;
+  }
+
+  .chapter-project-title small {
+    font-size: 11px;
+  }
+
+  .chapter-nav {
+    right: 5px;
+    gap: 6px;
+  }
+
+  .chapter-dot {
+    width: 27px;
+    height: 27px;
+  }
+
+  .chapter-counter {
+    left: 20px;
+    bottom: 15px;
+  }
+
+  .chapter-direction-controls {
+    right: 16px;
+    bottom: 13px;
+  }
+
+  .chapter-direction-controls button {
+    width: 35px;
+    height: 35px;
+  }
+
+  /* Preserve the full 2.5D hero image. */
+
+  .chapter-page--home .sentinel-hero {
+    min-height: 880px;
+    height: auto;
+  }
+
+  /* Content may scroll inside the chapter
+     without displaying a scrollbar. */
+
+  .chapter-page--home .chapter-inner-scroll {
+    display: block;
+  }
+}
+
+/* ==================================================
+   17. SMALL MOBILE
+================================================== */
+
+@media (max-width: 390px) {
+  .chapter-skills {
+    grid-template-columns: 1fr;
+  }
+
+  .chapter-skill {
+    min-height: auto;
+  }
+
+  .chapter-content h2 {
+    font-size: 9vw;
+  }
+}
+
+/* ==================================================
+   18. ACCESSIBILITY
+================================================== */
+
+.chapter-dot:focus-visible,
+.chapter-direction-controls button:focus-visible,
+.chapter-project:focus-visible {
+  outline: 2px solid #d41514;
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chapter-page *,
+  .chapter-page *::before,
+  .chapter-page *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .chapter-skill:hover {
+    transform: none;
+  }
+}
+
+/* ==========================================
+   CRIMSON SENTINEL — HERO VISIBILITY FIX
+========================================== */
+
+/* Give the home scene its own full viewport. */
+
+.chapter-page--home {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #080808;
+}
+
+.chapter-page--home .chapter-inner-scroll {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Make the Sentinel hero fill the home scene. */
+
+.chapter-page--home .sentinel-hero {
+  position: relative;
+  display: flex;
+
+  width: 100%;
+  min-height: 100%;
+  height: 100%;
+
+  max-height: none;
+  flex-shrink: 0;
+
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Restore the 2.5D image layer. */
+
+.chapter-page--home .sentinel-image-motion {
+  position: absolute;
+
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  width: 60%;
+  height: 100%;
+
+  z-index: 2;
+
+  display: block;
+  visibility: visible;
+  pointer-events: none;
+}
+
+/* Preserve the character's floating animation. */
+
+.chapter-page--home .sentinel-image-window {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.chapter-page--home .sentinel-image-float {
+  position: absolute;
+  inset: 0;
+}
+
+/* Keep the original image visible and responsive. */
+
+.chapter-page--home .sentinel-character {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center 32%;
+
+  visibility: visible;
+
+  filter: contrast(1.08) saturate(1.1);
+}
+
+/* Preserve atmosphere and crimson illumination. */
+
+.chapter-page--home .sentinel-atmosphere {
+  z-index: 0;
+}
+
+.chapter-page--home .sentinel-grid {
+  z-index: 1;
+}
+
+.chapter-page--home .sentinel-red-aura {
+  z-index: 3;
+}
+
+/* Keep the title above the character. */
+
+.chapter-page--home .sentinel-copy {
+  position: relative;
+  z-index: 5;
+}
+
+/* Keep holographic panels above the image. */
+
+.chapter-page--home .sentinel-hud-layer {
+  z-index: 6;
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 680px) {
+  .chapter-page--home .sentinel-hero {
+    height: auto;
+    min-height: 880px;
+    max-height: none;
+  }
+
+  .chapter-page--home .sentinel-image-motion {
+    top: 70px;
+    right: 0;
+    bottom: auto;
+
+    width: 100%;
+    height: 470px;
+  }
+
+  .chapter-page--home .sentinel-character {
+    object-position: center 24%;
+  }
+
+  .chapter-page--home .sentinel-copy {
+    padding-top: 490px;
+  }
+}
+
+@media (max-width: 390px) {
+  .chapter-page--home .sentinel-image-motion {
+    height: 420px;
+  }
+
+  .chapter-page--home .sentinel-copy {
+    padding-top: 440px;
+  }
+}

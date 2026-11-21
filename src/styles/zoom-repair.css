@@ -1,0 +1,110 @@
+/* ==========================================
+   CRIMSON ANOMALY — ZOOM REPAIR
+   Layout protection for Motion animations
+========================================== */
+
+/* Keep both route and chapter motion stages
+   in a predictable stacking context. */
+
+.route-scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+  transform-origin: center center;
+  isolation: isolate;
+}
+
+/* Other routes retain their internal scrolling. */
+
+.route-scene--page {
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.route-scene--page::-webkit-scrollbar {
+  display: none;
+}
+
+/* The homepage owns its full viewport. */
+
+.route-scene--home .chapter-experience {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+}
+
+.chapter-stage {
+  position: absolute;
+  inset: 0;
+
+  overflow: hidden;
+  isolation: isolate;
+
+  perspective: 1400px;
+}
+
+/* Motion controls the scene's transform.
+   Do not apply a competing CSS transform here. */
+
+.chapter-stage > .chapter-page {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  transform-origin: center center;
+  backface-visibility: hidden;
+  overflow: hidden;
+}
+
+/* Preserve internal scrolling for long content. */
+
+.chapter-page .chapter-inner-scroll {
+  width: 100%;
+  height: 100%;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  scrollbar-width: none;
+  overscroll-behavior: contain;
+}
+
+.chapter-page .chapter-inner-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Make the lighting visual-only.
+   It must not capture scrolling or clicks. */
+
+.scene-light-system,
+.scene-light-system * {
+  pointer-events: none;
+}
+
+/* Keep interactive navigation accessible. */
+
+.chapter-nav,
+.chapter-direction-controls {
+  z-index: 95;
+}
+
+.site-header {
+  z-index: 200;
+}
+
+/* The existing Sentinel art remains visible. */
+
+.chapter-page--home .sentinel-image-motion {
+  pointer-events: none;
+}
+
+/* Don't override Motion's inline transforms.
+   Reduced-motion behavior is handled in React. */

@@ -1,0 +1,343 @@
+/* ==============================================
+   CRIMSON ANOMALY — PHASE 5A
+   SENTINEL CINEMATIC LIGHTING
+
+   Safe visual enhancement.
+   Does not modify Motion zoom transforms.
+============================================== */
+
+:root {
+  --sentinel-crimson: #d41514;
+  --sentinel-obsidian: #080808;
+  --sentinel-silver: #cdcbca;
+}
+
+/* ==============================================
+   01. CHARACTER LIGHTING
+============================================== */
+
+.chapter-page--home .sentinel-image-motion {
+  isolation: isolate;
+}
+
+/* Rear atmospheric illumination */
+
+.chapter-page--home .sentinel-red-aura {
+  z-index: 0;
+
+  background: radial-gradient(
+    ellipse at 55% 45%,
+    rgba(212, 21, 20, 0.36) 0%,
+    rgba(212, 21, 20, 0.17) 28%,
+    rgba(212, 21, 20, 0.055) 55%,
+    transparent 75%
+  );
+
+  filter: blur(38px);
+
+  animation: phase5-reactor-breathe 5s ease-in-out infinite;
+}
+
+/* Character artwork remains the primary layer */
+
+.chapter-page--home .sentinel-image-window {
+  z-index: 2;
+  isolation: isolate;
+}
+
+/* Enhanced luminous visor atmosphere */
+
+.chapter-page--home .sentinel-image-window::after {
+  content: "";
+
+  position: absolute;
+
+  top: 14%;
+  left: 35%;
+
+  width: 35%;
+  height: 20%;
+
+  z-index: 4;
+  pointer-events: none;
+
+  border-radius: 50%;
+
+  background: radial-gradient(
+    ellipse,
+    rgba(255, 42, 35, 0.22),
+    rgba(212, 21, 20, 0.07) 42%,
+    transparent 74%
+  );
+
+  filter: blur(26px);
+  mix-blend-mode: screen;
+
+  animation: phase5-visor-energy 4.5s ease-in-out infinite;
+}
+
+/* Cinematic reflective highlight */
+
+.chapter-page--home .sentinel-image-window::before {
+  content: "";
+
+  position: absolute;
+  inset: -25%;
+
+  z-index: 3;
+  pointer-events: none;
+
+  background: linear-gradient(
+    108deg,
+    transparent 38%,
+    rgba(205, 203, 202, 0.015) 44%,
+    rgba(255, 255, 255, 0.075) 49%,
+    rgba(212, 21, 20, 0.055) 52%,
+    transparent 58%
+  );
+
+  transform: translateX(-80%) rotate(-6deg);
+  mix-blend-mode: screen;
+
+  animation: phase5-reflection-sweep 9s ease-in-out infinite;
+}
+
+/* ==============================================
+   02. INTERACTIVE GLOW BOOST
+============================================== */
+
+.chapter-page--home .sentinel-boosted .sentinel-red-aura {
+  filter: blur(45px);
+
+  background: radial-gradient(
+    ellipse,
+    rgba(212, 21, 20, 0.56),
+    rgba(212, 21, 20, 0.2) 38%,
+    transparent 72%
+  );
+}
+
+.chapter-page--home .sentinel-boosted .sentinel-image-window::after {
+  opacity: 1;
+
+  filter: blur(34px) drop-shadow(0 0 24px #d41514);
+}
+
+/* ==============================================
+   03. HEADLINE FINISH
+============================================== */
+
+.chapter-page--home .sentinel-title {
+  text-rendering: optimizeLegibility;
+
+  text-shadow:
+    0 8px 35px rgba(0, 0, 0, 0.6),
+    0 0 45px rgba(205, 203, 202, 0.035);
+}
+
+.chapter-page--home .sentinel-title .accent {
+  text-shadow: 0 0 18px rgba(212, 21, 20, 0.4);
+}
+
+/* ==============================================
+   04. PREMIUM HOLOGRAPHIC PANELS
+============================================== */
+
+.chapter-page--home .sentinel-hud-panel,
+.chapter-page--home .sentinel-core-panel {
+  box-shadow:
+    0 18px 48px rgba(0, 0, 0, 0.3),
+    0 0 28px rgba(212, 21, 20, 0.045),
+    inset 0 1px rgba(205, 203, 202, 0.055);
+}
+
+.chapter-page--home .sentinel-hud-panel {
+  border-color: rgba(212, 21, 20, 0.24);
+}
+
+.chapter-page--home .sentinel-hud-panel::before {
+  content: "";
+
+  position: absolute;
+
+  top: -1px;
+  left: 12px;
+
+  width: 30%;
+  height: 1px;
+
+  background: linear-gradient(90deg, transparent, #d41514, transparent);
+
+  box-shadow: 0 0 12px #d41514;
+}
+
+.chapter-page--home .hud-progress > span {
+  box-shadow:
+    0 0 10px rgba(212, 21, 20, 0.9),
+    0 0 22px rgba(212, 21, 20, 0.3);
+}
+
+.chapter-page--home .sentinel-core-button {
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.chapter-page--home .sentinel-core-button:hover {
+  color: #ffffff;
+  transform: translateX(2px);
+}
+
+/* ==============================================
+   05. CHAPTER BACKLIGHT REFINEMENT
+============================================== */
+
+.chapter-page:not(.chapter-page--home)::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  z-index: 0;
+  pointer-events: none;
+
+  background: radial-gradient(
+    ellipse at 75% 62%,
+    rgba(212, 21, 20, 0.085),
+    transparent 55%
+  );
+
+  opacity: 0.8;
+}
+
+.chapter-page:not(.chapter-page--home) .chapter-inner-scroll {
+  z-index: 2;
+}
+
+/* ==============================================
+   06. BUTTON MICRO-INTERACTIONS
+============================================== */
+
+.chapter-page--home .sentinel-enter-button {
+  position: relative;
+  overflow: hidden;
+
+  transition:
+    box-shadow 0.25s ease,
+    transform 0.25s ease,
+    background-color 0.25s ease;
+}
+
+.chapter-page--home .sentinel-enter-button:hover {
+  box-shadow:
+    0 0 16px rgba(212, 21, 20, 0.4),
+    0 0 48px rgba(212, 21, 20, 0.16);
+}
+
+.chapter-page--home .sentinel-enter-button:focus-visible {
+  outline: 2px solid #cdcbca;
+  outline-offset: 4px;
+}
+
+/* ==============================================
+   07. ANIMATIONS
+============================================== */
+
+@keyframes phase5-reactor-breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.96);
+  }
+
+  50% {
+    opacity: 0.95;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes phase5-visor-energy {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.93);
+  }
+
+  50% {
+    opacity: 0.85;
+    transform: scale(1.12);
+  }
+}
+
+@keyframes phase5-reflection-sweep {
+  0%,
+  20% {
+    transform: translateX(-85%) rotate(-6deg);
+    opacity: 0;
+  }
+
+  30% {
+    opacity: 0.7;
+  }
+
+  50% {
+    transform: translateX(80%) rotate(-6deg);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(80%) rotate(-6deg);
+    opacity: 0;
+  }
+}
+
+/* ==============================================
+   08. LAPTOP
+============================================== */
+
+@media (max-width: 1200px) {
+  .chapter-page--home .sentinel-image-window::after {
+    left: 32%;
+    width: 40%;
+  }
+}
+
+/* ==============================================
+   09. MOBILE
+============================================== */
+
+@media (max-width: 680px) {
+  .chapter-page--home .sentinel-image-window::after {
+    top: 19%;
+    left: 30%;
+
+    width: 40%;
+    height: 17%;
+
+    opacity: 0.4;
+  }
+
+  .chapter-page--home .sentinel-image-window::before {
+    opacity: 0.45;
+  }
+}
+
+/* ==============================================
+   10. REDUCED MOTION
+============================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .chapter-page--home .sentinel-red-aura,
+  .chapter-page--home .sentinel-image-window::before,
+  .chapter-page--home .sentinel-image-window::after {
+    animation: none !important;
+  }
+
+  .chapter-page--home .sentinel-image-window::before {
+    display: none;
+  }
+
+  .chapter-page--home .sentinel-core-button {
+    transition: none;
+  }
+}

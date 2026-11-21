@@ -1,0 +1,874 @@
+/* =============================================
+   CRIMSON ANOMALY — PHASE 5D
+   SEVEN DISTINCTIVE CHAPTER ARTIFACTS
+
+   Visual-only layer.
+   Existing zoom transitions are unchanged.
+============================================= */
+
+/* =============================================
+   01. SHARED ARTIFACT STAGE
+============================================= */
+
+.chapter-page .chapter-inner-scroll {
+  position: relative;
+  z-index: 2;
+}
+
+.chapter-artifact-layer {
+  --artifact-move-x: 0px;
+  --artifact-move-y: 0px;
+
+  position: absolute;
+  inset: 0;
+
+  z-index: 1;
+  overflow: hidden;
+
+  pointer-events: none;
+  user-select: none;
+}
+
+.chapter-artifact-layer *,
+.chapter-artifact-layer *::before,
+.chapter-artifact-layer *::after {
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.chapter-artifact-position {
+  position: absolute;
+
+  right: 4%;
+  top: 50%;
+
+  width: clamp(280px, 39vw, 560px);
+  height: clamp(280px, 39vw, 560px);
+
+  transform: translateY(-50%);
+}
+
+.chapter-artifact-motion {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  translate: var(--artifact-move-x) var(--artifact-move-y);
+
+  transition: translate 0.28s ease-out;
+}
+
+.artifact-visual-label {
+  position: absolute;
+  left: 50%;
+  bottom: 3%;
+
+  transform: translateX(-50%);
+
+  width: max-content;
+  max-width: 90%;
+
+  color: rgba(205, 203, 202, 0.62);
+
+  font-family: "DM Mono", monospace;
+  font-size: 9px;
+  letter-spacing: 0.17em;
+}
+
+/* =============================================
+   02. HOME — SENTINEL ACCENT
+
+   Keep your original character as the hero.
+   This visual is intentionally minimal.
+============================================= */
+
+.chapter-artifact-layer[data-artifact="home"] {
+  z-index: 0;
+  opacity: 0.32;
+}
+
+.chapter-artifact-layer[data-artifact="home"] .chapter-artifact-position {
+  right: 11%;
+  top: 48%;
+
+  width: 460px;
+  height: 460px;
+}
+
+.artifact-home {
+  position: absolute;
+  inset: 0;
+}
+
+.artifact-home-orbit {
+  position: absolute;
+  inset: 5%;
+
+  border: 1px solid rgba(212, 21, 20, 0.28);
+
+  border-radius: 50%;
+
+  box-shadow: 0 0 45px rgba(212, 21, 20, 0.06);
+}
+
+.artifact-home-orbit::before {
+  content: "";
+
+  position: absolute;
+  inset: 15%;
+
+  border: 1px dashed rgba(205, 203, 202, 0.16);
+
+  border-radius: 50%;
+}
+
+.artifact-home-line {
+  position: absolute;
+
+  top: 50%;
+  left: 0;
+
+  width: 100%;
+  height: 1px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(212, 21, 20, 0.4),
+    transparent
+  );
+}
+
+.artifact-home > span {
+  position: absolute;
+  right: 0;
+  bottom: 20%;
+
+  font:
+    9px "DM Mono",
+    monospace;
+  color: #d41514;
+  letter-spacing: 0.2em;
+}
+
+/* =============================================
+   03. ABOUT — SIGNAL CORE
+============================================= */
+
+.artifact-signal {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.artifact-signal-halo {
+  position: absolute;
+  inset: 12%;
+
+  border-radius: 50%;
+
+  background: radial-gradient(
+    circle,
+    rgba(212, 21, 20, 0.19),
+    rgba(212, 21, 20, 0.045) 45%,
+    transparent 75%
+  );
+
+  filter: blur(25px);
+
+  animation: artifact-breathe 5s ease-in-out infinite;
+}
+
+.artifact-signal-ring {
+  position: absolute;
+
+  border-radius: 50%;
+  border: 1px solid rgba(212, 21, 20, 0.34);
+}
+
+.artifact-signal-ring.ring-one {
+  inset: 9%;
+
+  border-style: dashed;
+
+  animation: artifact-rotate 35s linear infinite;
+}
+
+.artifact-signal-ring.ring-two {
+  inset: 22%;
+
+  border-color: rgba(205, 203, 202, 0.19);
+
+  animation: artifact-rotate 25s linear infinite reverse;
+}
+
+.artifact-signal-ring.ring-three {
+  inset: 34%;
+
+  border-width: 2px;
+  border-top-color: #d41514;
+  border-right-color: transparent;
+
+  box-shadow: 0 0 25px rgba(212, 21, 20, 0.12);
+
+  animation: artifact-rotate 12s linear infinite;
+}
+
+.artifact-signal-core {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 95px;
+  height: 95px;
+
+  display: grid;
+  place-items: center;
+
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+
+  border: 1px solid rgba(212, 21, 20, 0.45);
+
+  background: radial-gradient(circle, #451010, #100909 70%);
+
+  box-shadow:
+    0 0 35px rgba(212, 21, 20, 0.17),
+    inset 0 0 25px rgba(212, 21, 20, 0.15);
+}
+
+.artifact-core-center {
+  width: 17px;
+  height: 17px;
+
+  border-radius: 50%;
+
+  background: #d41514;
+
+  box-shadow:
+    0 0 18px #d41514,
+    0 0 55px rgba(212, 21, 20, 0.55);
+}
+
+/* =============================================
+   04. SKILLS — NEURAL ARCHITECTURE
+============================================= */
+
+.artifact-neural {
+  width: 100%;
+  height: 100%;
+
+  position: relative;
+}
+
+.artifact-neural-svg {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: visible;
+
+  filter: drop-shadow(0 0 12px rgba(212, 21, 20, 0.08));
+}
+
+.artifact-network-connection {
+  stroke-dasharray: 1 1;
+}
+
+.artifact-network-node {
+  animation: artifact-node-pulse 3s ease-in-out infinite;
+}
+
+/* =============================================
+   05. PROJECTS — ARTIFACT VAULT
+============================================= */
+
+.artifact-vault {
+  position: relative;
+
+  display: grid;
+  place-items: center;
+
+  width: 100%;
+  height: 100%;
+
+  perspective: 900px;
+}
+
+.artifact-vault-back {
+  position: absolute;
+
+  width: 62%;
+  height: 68%;
+
+  background: linear-gradient(
+    135deg,
+    rgba(212, 21, 20, 0.08),
+    rgba(8, 8, 8, 0.85)
+  );
+
+  border: 1px solid rgba(212, 21, 20, 0.15);
+
+  transform: translate(25px, -18px) rotate(8deg);
+}
+
+.artifact-vault-frame {
+  position: relative;
+
+  width: 62%;
+  height: 68%;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid rgba(205, 203, 202, 0.34);
+
+  background: linear-gradient(
+    140deg,
+    rgba(38, 18, 19, 0.86),
+    rgba(8, 8, 8, 0.84)
+  );
+
+  box-shadow:
+    0 20px 75px rgba(0, 0, 0, 0.35),
+    0 0 50px rgba(212, 21, 20, 0.06);
+
+  transform: rotate(-5deg);
+
+  animation: artifact-vault-float 5.5s ease-in-out infinite;
+}
+
+.artifact-vault-symbol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.artifact-vault-symbol > span {
+  font-size: clamp(65px, 8vw, 115px);
+
+  font-weight: 700;
+  line-height: 1;
+
+  letter-spacing: -0.12em;
+  color: rgba(205, 203, 202, 0.64);
+}
+
+.artifact-vault-symbol > small {
+  font:
+    9px "DM Mono",
+    monospace;
+  letter-spacing: 0.18em;
+  color: #d41514;
+}
+
+.artifact-vault-scan {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  top: 0;
+
+  height: 2px;
+
+  background: #d41514;
+
+  box-shadow: 0 0 13px rgba(212, 21, 20, 0.7);
+
+  opacity: 0;
+
+  animation: artifact-scan 5s ease-in-out infinite;
+}
+
+.artifact-vault-corner {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+
+  border-color: #d41514;
+  border-style: solid;
+}
+
+.corner-a {
+  top: -1px;
+  left: -1px;
+  border-width: 2px 0 0 2px;
+}
+
+.corner-b {
+  top: -1px;
+  right: -1px;
+  border-width: 2px 2px 0 0;
+}
+
+.corner-c {
+  bottom: -1px;
+  left: -1px;
+  border-width: 0 0 2px 2px;
+}
+
+.corner-d {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 2px 2px 0;
+}
+
+/* =============================================
+   06. JOURNEY — TRAJECTORY
+============================================= */
+
+.artifact-trajectory {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.artifact-trajectory-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.artifact-trajectory-path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+
+  animation: artifact-draw-path 2.6s ease-out forwards;
+}
+
+/* =============================================
+   07. MOTION LAB — KINETIC MECHANISM
+============================================= */
+
+.artifact-kinetic {
+  width: 100%;
+  height: 100%;
+
+  position: relative;
+
+  display: grid;
+  place-items: center;
+
+  perspective: 900px;
+}
+
+.artifact-kinetic-glow {
+  position: absolute;
+  inset: 10%;
+
+  border-radius: 50%;
+
+  background: radial-gradient(circle, rgba(212, 21, 20, 0.24), transparent 70%);
+
+  filter: blur(38px);
+}
+
+.artifact-kinetic-ring {
+  position: absolute;
+
+  border-radius: 50%;
+  border: 1px solid rgba(212, 21, 20, 0.35);
+}
+
+.artifact-kinetic-ring.outer {
+  inset: 8%;
+
+  border-style: dashed;
+
+  animation: artifact-rotate 30s linear infinite;
+}
+
+.artifact-kinetic-ring.middle {
+  inset: 22%;
+
+  border-top-width: 3px;
+  border-top-color: #d41514;
+  border-right-color: transparent;
+
+  animation: artifact-rotate 14s linear infinite reverse;
+}
+
+.artifact-kinetic-ring.inner {
+  inset: 33%;
+
+  border-color: rgba(205, 203, 202, 0.26);
+}
+
+.artifact-kinetic-cube {
+  position: relative;
+
+  width: 115px;
+  height: 115px;
+
+  transform-style: preserve-3d;
+
+  animation: artifact-kinetic-spin 12s linear infinite;
+}
+
+.kinetic-face {
+  position: absolute;
+  inset: 0;
+
+  border: 1px solid rgba(212, 21, 20, 0.65);
+
+  background: rgba(212, 21, 20, 0.075);
+
+  box-shadow: inset 0 0 30px rgba(212, 21, 20, 0.08);
+}
+
+.face-front {
+  transform: translateZ(57.5px);
+}
+
+.face-back {
+  transform: rotateY(180deg) translateZ(57.5px);
+}
+
+.face-left {
+  transform: rotateY(-90deg) translateZ(57.5px);
+}
+
+.face-right {
+  transform: rotateY(90deg) translateZ(57.5px);
+}
+
+.face-top {
+  transform: rotateX(90deg) translateZ(57.5px);
+}
+
+.face-bottom {
+  transform: rotateX(-90deg) translateZ(57.5px);
+}
+
+/* =============================================
+   08. CONTACT — TRANSMISSION FIELD
+============================================= */
+
+.artifact-transmission {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  display: grid;
+  place-items: center;
+}
+
+.artifact-transmission-wave {
+  position: absolute;
+
+  width: 70%;
+  height: 70%;
+
+  border-radius: 50%;
+  border: 1px solid rgba(212, 21, 20, 0.52);
+
+  opacity: 0;
+
+  animation: artifact-transmit 4.5s linear infinite;
+}
+
+.artifact-transmission-wave.wave-two {
+  animation-delay: 1.5s;
+}
+
+.artifact-transmission-wave.wave-three {
+  animation-delay: 3s;
+}
+
+.artifact-transmission-core {
+  width: 130px;
+  height: 130px;
+
+  border-radius: 50%;
+
+  display: grid;
+  place-items: center;
+
+  background: radial-gradient(
+    circle,
+    rgba(212, 21, 20, 0.25),
+    rgba(8, 8, 8, 0.88) 72%
+  );
+
+  border: 1px solid rgba(212, 21, 20, 0.52);
+}
+
+.artifact-transmission-core > span {
+  width: 21px;
+  height: 21px;
+
+  border-radius: 50%;
+
+  background: #d41514;
+
+  box-shadow:
+    0 0 18px #d41514,
+    0 0 55px rgba(212, 21, 20, 0.65);
+}
+
+.artifact-transmission-line {
+  position: absolute;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(212, 21, 20, 0.3),
+    transparent
+  );
+}
+
+.artifact-transmission-line.horizontal {
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+}
+
+.artifact-transmission-line.vertical {
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(212, 21, 20, 0.3),
+    transparent
+  );
+}
+
+/* =============================================
+   09. ANIMATION KEYFRAMES
+============================================= */
+
+@keyframes artifact-breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.96);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes artifact-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes artifact-node-pulse {
+  0%,
+  100% {
+    opacity: 0.48;
+  }
+
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 3px #d41514);
+  }
+}
+
+@keyframes artifact-vault-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-5deg);
+  }
+
+  50% {
+    transform: translateY(-12px) rotate(-3deg);
+  }
+}
+
+@keyframes artifact-scan {
+  0%,
+  15% {
+    top: 0;
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 0.7;
+  }
+
+  60% {
+    top: 100%;
+    opacity: 0.55;
+  }
+
+  75%,
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes artifact-draw-path {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes artifact-kinetic-spin {
+  from {
+    transform: rotateX(-15deg) rotateY(0deg) rotateZ(0deg);
+  }
+
+  to {
+    transform: rotateX(345deg) rotateY(360deg) rotateZ(180deg);
+  }
+}
+
+@keyframes artifact-transmit {
+  0% {
+    opacity: 0;
+    transform: scale(0.25);
+  }
+
+  18% {
+    opacity: 0.67;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.7);
+  }
+}
+
+/* =============================================
+   10. LAPTOP AND TABLET
+============================================= */
+
+@media (max-width: 1150px) {
+  .chapter-artifact-position {
+    right: -3%;
+
+    width: clamp(280px, 38vw, 460px);
+    height: clamp(280px, 38vw, 460px);
+  }
+
+  .chapter-artifact-layer {
+    opacity: 0.7;
+  }
+}
+
+@media (max-width: 850px) {
+  .chapter-artifact-position {
+    right: -12%;
+
+    width: 350px;
+    height: 350px;
+  }
+
+  .chapter-artifact-layer {
+    opacity: 0.35;
+  }
+
+  .chapter-artifact-layer[data-artifact="home"] {
+    opacity: 0.12;
+  }
+}
+
+/* =============================================
+   11. MOBILE
+
+   Keep visuals decorative.
+   Keep all chapter text readable.
+============================================= */
+
+@media (max-width: 680px) {
+  .chapter-artifact-position {
+    right: -90px;
+    top: 33%;
+
+    width: 280px;
+    height: 280px;
+  }
+
+  .chapter-artifact-layer {
+    opacity: 0.2;
+  }
+
+  .chapter-artifact-layer[data-artifact="home"] {
+    display: none;
+  }
+
+  .artifact-visual-label {
+    display: none;
+  }
+
+  .artifact-kinetic-cube {
+    width: 80px;
+    height: 80px;
+  }
+
+  .artifact-kinetic-cube .face-front {
+    transform: translateZ(40px);
+  }
+
+  .artifact-kinetic-cube .face-back {
+    transform: rotateY(180deg) translateZ(40px);
+  }
+
+  .artifact-kinetic-cube .face-left {
+    transform: rotateY(-90deg) translateZ(40px);
+  }
+
+  .artifact-kinetic-cube .face-right {
+    transform: rotateY(90deg) translateZ(40px);
+  }
+
+  .artifact-kinetic-cube .face-top {
+    transform: rotateX(90deg) translateZ(40px);
+  }
+
+  .artifact-kinetic-cube .face-bottom {
+    transform: rotateX(-90deg) translateZ(40px);
+  }
+}
+
+/* =============================================
+   12. REDUCED MOTION
+============================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .chapter-artifact-layer *,
+  .chapter-artifact-layer *::before,
+  .chapter-artifact-layer *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .chapter-artifact-motion {
+    translate: 0 0 !important;
+  }
+
+  .artifact-trajectory-path {
+    stroke-dashoffset: 0;
+  }
+
+  .artifact-network-node {
+    opacity: 1;
+  }
+
+  .artifact-transmission-wave {
+    display: none;
+  }
+
+  .artifact-vault-scan {
+    display: none;
+  }
+
+  .artifact-signal-halo {
+    opacity: 0.45;
+    transform: none;
+  }
+}

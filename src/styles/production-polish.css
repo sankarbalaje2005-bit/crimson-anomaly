@@ -1,0 +1,541 @@
+/* ==================================================
+   CRIMSON ANOMALY — PHASE 5G
+   PRODUCTION VISUAL + ACCESSIBILITY POLISH
+
+   Preserve:
+   - All route and chapter zoom transitions
+   - Crimson Sentinel 2.5D motion
+   - Existing chapter portals
+   - All seven animated artifacts
+   - Cinematic HUD and precision light
+================================================== */
+
+:root {
+  --ca-focus: #d41514;
+  --ca-silver: #cdcbca;
+  --ca-obsidian: #080808;
+}
+
+/* ==================================================
+   01. ROBUST VIEWPORT HANDLING
+================================================== */
+
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+}
+
+html,
+body {
+  margin: 0;
+  overscroll-behavior: none;
+}
+
+#root {
+  min-height: 100%;
+  min-height: 100dvh;
+}
+
+/*
+   Keep the full-screen chapter model.
+
+   Do not introduce document scrolling or
+   override the existing chapter scroll engine.
+*/
+
+.chapter-experience,
+.chapter-stage {
+  max-width: 100%;
+}
+
+.chapter-page,
+.route-scene {
+  backface-visibility: hidden;
+}
+
+/* ==================================================
+   02. SAFE CONTENT WRAPPING
+================================================== */
+
+.chapter-content {
+  overflow-wrap: break-word;
+}
+
+.chapter-content h2,
+.chapter-content h3 {
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: auto;
+}
+
+.chapter-description,
+.chapter-lead,
+.chapter-project-title,
+.chapter-project-title small {
+  overflow-wrap: anywhere;
+}
+
+.chapter-project,
+.chapter-skill {
+  min-width: 0;
+}
+
+/*
+   Avoid breaking long links and technical
+   project descriptions on small screens.
+*/
+
+.chapter-contact-links a,
+.chapter-tags span {
+  overflow-wrap: anywhere;
+}
+
+/* ==================================================
+   03. VISUAL CONTENT READABILITY
+================================================== */
+
+.chapter-page:not(.chapter-page--home) .chapter-content {
+  position: relative;
+  z-index: 2;
+}
+
+.chapter-page:not(.chapter-page--home) .chapter-content h2 {
+  text-wrap: balance;
+}
+
+.chapter-page:not(.chapter-page--home) .chapter-lead {
+  line-height: 1.65;
+  text-wrap: pretty;
+}
+
+.chapter-page:not(.chapter-page--home) .chapter-description p {
+  line-height: 1.7;
+}
+
+/* ==================================================
+   04. FOCUS VISIBILITY
+================================================== */
+
+.ca-skip-link {
+  position: fixed;
+
+  top: 12px;
+  left: 12px;
+
+  z-index: 10000;
+
+  padding: 12px 18px;
+
+  border: 1px solid #d41514;
+  border-radius: 6px;
+
+  background: #080808;
+  color: #cdcbca;
+
+  font-family: "DM Mono", monospace;
+  font-size: 12px;
+  font-weight: 500;
+
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5);
+
+  transform: translateY(-170%);
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+.ca-skip-link:focus-visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+
+  outline: 2px solid #cdcbca;
+  outline-offset: 3px;
+}
+
+/* Interactive navigation and buttons */
+
+.chapter-nav button:focus-visible,
+.chapter-direction-controls button:focus-visible,
+.chapter-project:focus-visible,
+.chapter-contact-links a:focus-visible,
+.chapter-page a:focus-visible,
+.chapter-page button:focus-visible {
+  outline: 2px solid var(--ca-focus);
+  outline-offset: 4px;
+}
+
+/* ==================================================
+   05. HOVER CAPABILITY
+
+   Avoid artificial hover lift on touch screens.
+================================================== */
+
+@media (hover: none), (pointer: coarse) {
+  .chapter-page--skills .chapter-skill:hover {
+    transform: none;
+  }
+
+  .chapter-page--projects .chapter-project:hover .chapter-project-arrow {
+    transform: none;
+  }
+
+  .chapter-page--contact .button-primary:hover {
+    transform: none;
+  }
+}
+
+/* ==================================================
+   06. RENDERING ISOLATION
+
+   Decorative layers should never intercept
+   interaction events or alter layout.
+================================================== */
+
+.chapter-cinematic-fx,
+.chapter-artifact-layer,
+.chapter-precision-fx,
+.chapter-interface,
+.scene-light-system,
+.sfx-layer {
+  pointer-events: none;
+  user-select: none;
+}
+
+.chapter-cinematic-fx *,
+.chapter-artifact-layer *,
+.chapter-precision-fx *,
+.chapter-interface *,
+.scene-light-system *,
+.sfx-layer * {
+  pointer-events: none;
+}
+
+/*
+   Do not apply contain: paint to the whole
+   chapter stage or route scene.
+
+   That can clip effects and break layering.
+*/
+
+/* ==================================================
+   07. PAUSE DECORATIVE CSS ANIMATIONS
+   WHEN THE TAB IS HIDDEN
+
+   Never pause .chapter-page or .route-scene.
+   They are animated by Motion.
+================================================== */
+
+html[data-ca-hidden="true"] .sentinel-red-aura,
+html[data-ca-hidden="true"] .sentinel-image-window::before,
+html[data-ca-hidden="true"] .sentinel-image-window::after,
+html[data-ca-hidden="true"] .sfx-scan-beam,
+html[data-ca-hidden="true"] .cfx-ambient,
+html[data-ca-hidden="true"] .cfx-orbit,
+html[data-ca-hidden="true"] .artifact-signal-ring,
+html[data-ca-hidden="true"] .artifact-kinetic-ring,
+html[data-ca-hidden="true"] .artifact-kinetic-cube,
+html[data-ca-hidden="true"] .artifact-transmission-wave,
+html[data-ca-hidden="true"] .artifact-network-node,
+html[data-ca-hidden="true"] .artifact-vault-frame,
+html[data-ca-hidden="true"] .artifact-vault-scan,
+html[data-ca-hidden="true"] .ci-live-dot {
+  animation-play-state: paused !important;
+}
+
+/* ==================================================
+   08. EXPLICIT DATA SAVER MODE
+
+   Keep the content and interactivity.
+   Reduce heavy atmospheric decorations.
+================================================== */
+
+html[data-ca-data-saver="true"] .chapter-precision-fx {
+  display: none;
+}
+
+html[data-ca-data-saver="true"] .cfx-ambient {
+  animation: none;
+  opacity: 0.22;
+}
+
+html[data-ca-data-saver="true"] .cfx-energy-sweep,
+html[data-ca-data-saver="true"] .cfx-transition-flash {
+  display: none;
+}
+
+html[data-ca-data-saver="true"] .sfx-scan-beam {
+  animation: none;
+  opacity: 0;
+}
+
+html[data-ca-data-saver="true"] .artifact-kinetic-ring {
+  animation-duration: 60s;
+}
+
+html[data-ca-data-saver="true"] .sentinel-red-aura {
+  filter: blur(18px);
+}
+
+/* ==================================================
+   09. LARGE DESKTOP
+================================================== */
+
+@media (min-width: 1600px) {
+  .chapter-page:not(.chapter-page--home) .chapter-lead {
+    max-width: 760px;
+  }
+
+  .chapter-page:not(.chapter-page--home) .chapter-description {
+    max-width: 680px;
+  }
+}
+
+/* ==================================================
+   10. MEDIUM LAPTOPS
+================================================== */
+
+@media (max-width: 1280px) {
+  .chapter-page:not(.chapter-page--home) .chapter-content h2 {
+    font-size: clamp(40px, 5.3vw, 80px);
+  }
+
+  .ci-top-signature {
+    left: 28px;
+  }
+
+  .ci-chapter-identity {
+    max-width: 220px;
+  }
+}
+
+/* ==================================================
+   11. TABLETS AND COMPACT WINDOWS
+================================================== */
+
+@media (max-width: 900px) {
+  .chapter-page:not(.chapter-page--home) .chapter-content h2 {
+    font-size: clamp(34px, 6.4vw, 62px);
+  }
+
+  .chapter-page:not(.chapter-page--home) .chapter-lead {
+    font-size: clamp(14px, 1.9vw, 17px);
+  }
+
+  /*
+     Reduce decorative emphasis, not the
+     functionality of the chapter.
+  */
+
+  .chapter-artifact-layer {
+    opacity: 0.32;
+  }
+
+  .chapter-cinematic-fx .cfx-grid {
+    opacity: 0.12;
+  }
+
+  .chapter-precision-fx {
+    opacity: 0.32;
+  }
+
+  .ci-side-markers,
+  .ci-technical-marker {
+    display: none;
+  }
+}
+
+/* ==================================================
+   12. MOBILE LAYOUT
+================================================== */
+
+@media (max-width: 680px) {
+  /*
+     Keep the existing hidden-scrollbar model.
+
+     Allow long chapter content to scroll
+     inside its own fullscreen chapter.
+  */
+
+  .chapter-page .chapter-inner-scroll {
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+
+  .chapter-page:not(.chapter-page--home) .chapter-content h2 {
+    font-size: clamp(30px, 8.6vw, 46px);
+    line-height: 1.07;
+    letter-spacing: -0.045em;
+  }
+
+  .chapter-page:not(.chapter-page--home) .chapter-lead {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .chapter-page:not(.chapter-page--home) .chapter-description p {
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .chapter-project-title small {
+    line-height: 1.5;
+  }
+
+  .chapter-tags {
+    row-gap: 8px;
+  }
+
+  /*
+     The chapter artwork remains present,
+     but should not dominate smaller screens.
+  */
+
+  .chapter-artifact-layer:not([data-artifact="home"]) {
+    opacity: 0.16;
+  }
+
+  .chapter-cinematic-fx .cfx-grid {
+    opacity: 0.06;
+  }
+
+  .ci-top-signature,
+  .ci-technical-marker,
+  .ci-side-markers {
+    display: none;
+  }
+
+  .ca-skip-link {
+    max-width: calc(100vw - 24px);
+    font-size: 12px;
+  }
+}
+
+/* ==================================================
+   13. SHORT LAPTOP DISPLAYS
+================================================== */
+
+@media (max-height: 720px) and (min-width: 681px) {
+  .chapter-page:not(.chapter-page--home) .chapter-content h2 {
+    font-size: clamp(36px, 4.8vw, 66px);
+  }
+
+  .chapter-page:not(.chapter-page--home) .chapter-lead {
+    line-height: 1.45;
+  }
+
+  .ci-chapter-identity {
+    display: none;
+  }
+
+  .ci-progress {
+    bottom: 12px;
+  }
+
+  .chapter-artifact-layer {
+    opacity: 0.4;
+  }
+}
+
+/* ==================================================
+   14. LANDSCAPE MOBILE
+================================================== */
+
+@media (max-height: 520px) and (max-width: 950px) {
+  .chapter-page:not(.chapter-page--home) .chapter-content h2 {
+    font-size: clamp(26px, 4vw, 40px);
+  }
+
+  .ci-chapter-identity,
+  .ci-top-signature,
+  .ci-side-markers {
+    display: none;
+  }
+
+  .chapter-artifact-layer {
+    opacity: 0.1;
+  }
+
+  .chapter-interface .ci-progress {
+    bottom: 10px;
+  }
+}
+
+/* ==================================================
+   15. HIGH CONTRAST / FORCED COLORS
+================================================== */
+
+@media (prefers-contrast: more) {
+  .chapter-lead,
+  .chapter-description p,
+  .chapter-identity,
+  .ci-identity-subtitle {
+    color: #cdcbca;
+  }
+
+  .chapter-project,
+  .chapter-skill {
+    border-color: rgba(205, 203, 202, 0.55);
+  }
+
+  .ci-progress-track {
+    background: rgba(205, 203, 202, 0.38);
+  }
+}
+
+@media (forced-colors: active) {
+  .chapter-project,
+  .chapter-skill,
+  .chapter-contact-links a {
+    border: 1px solid CanvasText;
+  }
+
+  .chapter-page a:focus-visible,
+  .chapter-page button:focus-visible,
+  .ca-skip-link:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 4px;
+  }
+
+  .ca-skip-link {
+    background: Canvas;
+    color: CanvasText;
+    border-color: CanvasText;
+  }
+}
+
+/* ==================================================
+   16. REDUCED MOTION
+
+   Only supplementary decorative effects.
+   Existing Home.tsx and App.tsx already
+   control accessible scene transitions.
+================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .chapter-precision-fx {
+    display: none;
+  }
+
+  .cfx-energy-sweep,
+  .cfx-transition-flash,
+  .ci-transition-cue,
+  .sfx-scan-beam {
+    display: none;
+  }
+
+  .chapter-page--skills .chapter-skill,
+  .chapter-page--projects .chapter-project,
+  .chapter-page--projects .chapter-project-arrow {
+    transition-duration: 0.01ms !important;
+  }
+
+  .ca-skip-link {
+    transition: none;
+  }
+}

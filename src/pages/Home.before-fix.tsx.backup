@@ -1,0 +1,587 @@
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+
+import HeroExperience from "../components/HeroExperience";
+import { identity, projects, skills } from "../data/site";
+
+const chapters = [
+  { id: "home", name: "The Awakening", number: "00" },
+  { id: "about", name: "The Signal", number: "01" },
+  { id: "skills", name: "The Architecture", number: "02" },
+  { id: "projects", name: "The Artifacts", number: "03" },
+  { id: "journey", name: "The Trajectory", number: "04" },
+  { id: "experimentation", name: "Motion Lab", number: "05" },
+  { id: "contact", name: "Transmission", number: "06" },
+];
+
+function chapterIndex(hash: string) {
+  const id = hash.replace("#", "");
+  const index = chapters.findIndex((chapter) => chapter.id === id);
+  return index < 0 ? 0 : index;
+}
+
+function editableElement(target: EventTarget | null) {
+  if (!(target instanceof HTMLElement)) return false;
+
+  return Boolean(
+    target.closest(
+      'input,textarea,select,[contenteditable="true"],[role="dialog"]',
+    ),
+  );
+}
+
+function canScrollInside(target: EventTarget | null, direction: number) {
+  if (!(target instanceof HTMLElement)) return false;
+
+  const panel = target.closest(".chapter-inner-scroll");
+
+  if (!(panel instanceof HTMLElement)) return false;
+
+  if (direction > 0) {
+    return panel.scrollTop + panel.clientHeight < panel.scrollHeight - 2;
+  }
+
+  return panel.scrollTop > 2;
+}
+
+function AboutChapter() {
+  return (
+    <div className="chapter-content about-chapter">
+      <span className="chapter-eyebrow">01 / THE SIGNAL</span>
+
+      <h2>
+        IDEAS DESERVE
+        <br />
+        <span>A DIFFERENT DIMENSION.</span>
+      </h2>
+
+      <div className="chapter-columns">
+        <div className="chapter-visual" aria-hidden="true">
+          <div className="chapter-geometric-core" />
+          <span>BUILD / EXPERIMENT / EVOLVE</span>
+        </div>
+
+        <div className="chapter-description">
+          <p>
+            I'm <strong>Sankar Balaje</strong>, a Full-Stack Developer and AI
+            Product Builder at the beginning of my professional journey.
+          </p>
+
+          <p>
+            I connect software engineering, artificial intelligence, emerging
+            technologies, and immersive interface design.
+          </p>
+
+          <p className="chapter-muted">
+            Engineering ideas. Coding possibilities. Building intelligence.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SkillsChapter() {
+  return (
+    <div className="chapter-content">
+      <span className="chapter-eyebrow">02 / THE ARCHITECTURE</span>
+
+      <h2>
+        BUILDING
+        <br />
+        <span>INTELLIGENT SYSTEMS.</span>
+      </h2>
+
+      <p className="chapter-lead">
+        My toolkit spans interfaces, backends, AI integrations, and deployment.
+      </p>
+
+      <div className="chapter-skills">
+        {skills.map((group, index) => (
+          <article className="chapter-skill" key={group.category}>
+            <span className="chapter-card-number">0{index + 1}</span>
+
+            <h3>{group.category}</h3>
+
+            <div className="chapter-tags">
+              {group.entries.map((entry) => (
+                <span key={entry}>{entry}</span>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ProjectsChapter() {
+  return (
+    <div className="chapter-content">
+      <span className="chapter-eyebrow">03 / THE ARTIFACTS</span>
+
+      <h2>
+        SELECTED
+        <br />
+        <span>CREATIONS.</span>
+      </h2>
+
+      <div className="chapter-project-list">
+        {projects.map((project, index) => (
+          <Link
+            key={project.slug}
+            className="chapter-project"
+            to={`/projects/${project.slug}`}
+          >
+            <span className="chapter-card-number">0{index + 1}</span>
+
+            <span className="chapter-project-title">
+              {project.title}
+              <small>{project.description}</small>
+            </span>
+
+            <span className="chapter-project-arrow" aria-hidden="true">
+              ↗
+            </span>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function JourneyChapter() {
+  return (
+    <div className="chapter-content">
+      <span className="chapter-eyebrow">04 / THE TRAJECTORY</span>
+
+      <h2>
+        MECHANICAL ORIGINS.
+        <br />
+        <span>DIGITAL AMBITIONS.</span>
+      </h2>
+
+      <div className="chapter-journey">
+        <span className="chapter-year">{identity.years}</span>
+
+        <div>
+          <h3>{identity.degree}</h3>
+          <p>{identity.university}</p>
+          <p className="chapter-muted">CGPA: {identity.cgpa}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ExperimentChapter() {
+  return (
+    <div className="chapter-content experiment-chapter">
+      <span className="chapter-eyebrow">05 / THE EXPERIMENTATION</span>
+
+      <h2>
+        DON'T JUST BROWSE.
+        <br />
+        <span>INTERFERE.</span>
+      </h2>
+
+      <p className="chapter-lead">
+        Enter an experimental playground for creative interfaces, motion
+        systems, and spatial experiences.
+      </p>
+
+      <Link to="/lab" className="button-primary">
+        ENTER MOTION LAB ↗
+      </Link>
+
+      <Link to="/dimension" className="chapter-secondary-link">
+        Discover the Hidden Dimension ↗
+      </Link>
+    </div>
+  );
+}
+
+function ContactChapter() {
+  return (
+    <div className="chapter-content contact-chapter">
+      <span className="chapter-eyebrow">06 / THE TRANSMISSION</span>
+
+      <h2>
+        HAVE AN IDEA?
+        <br />
+        <span>LET'S BUILD WHAT'S NEXT.</span>
+      </h2>
+
+      <p className="chapter-lead">
+        Let's connect and create something meaningful.
+      </p>
+
+      <div className="chapter-contact-links">
+        <a
+          className="button-primary"
+          href={identity.github}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          EXPLORE GITHUB ↗
+        </a>
+
+        {identity.linkedin && (
+          <a
+            className="button-quiet"
+            href={identity.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            LINKEDIN ↗
+          </a>
+        )}
+
+        {identity.email && (
+          <a className="button-quiet" href={`mailto:${identity.email}`}>
+            SEND AN EMAIL ↗
+          </a>
+        )}
+
+        {identity.resume && (
+          <a
+            className="button-quiet"
+            href={identity.resume}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            VIEW RÉSUMÉ ↗
+          </a>
+        )}
+      </div>
+
+      <p className="chapter-signature">SANKAR BALAJE / BEYOND THE SCREEN</p>
+    </div>
+  );
+}
+
+const views = [
+  HeroExperience,
+  AboutChapter,
+  SkillsChapter,
+  ProjectsChapter,
+  JourneyChapter,
+  ExperimentChapter,
+  ContactChapter,
+];
+
+// Direction-aware zoom animation.
+
+const sceneVariants = {
+  enter: (direction: number) => ({
+    opacity: 0,
+    scale: direction > 0 ? 0.72 : 1.32,
+    filter: "blur(10px)",
+  }),
+
+  center: {
+    opacity: 1,
+    scale: 1,
+    filter: "blur(0px)",
+  },
+
+  exit: (direction: number) => ({
+    opacity: 0,
+    scale: direction > 0 ? 1.32 : 0.72,
+    filter: "blur(10px)",
+  }),
+};
+
+export default function Home() {
+  const navigate = useNavigate();
+  const { hash } = useLocation();
+  const reducedMotion = Boolean(useReducedMotion());
+
+  const activeIndex = chapterIndex(hash);
+  const [direction, setDirection] = useState(1);
+
+  const stageRef = useRef<HTMLElement>(null);
+  const activePageRef = useRef<HTMLElement>(null);
+  const lastWheelNavigation = useRef(-Infinity);
+  const wheelAccumulation = useRef(0);
+  const touchStart = useRef({ x: 0, y: 0 });
+
+  const goToChapter = useCallback(
+    (index: number) => {
+      const next = Math.max(0, Math.min(chapters.length - 1, index));
+
+      if (next === activeIndex) return;
+
+      const now = performance.now();
+
+      // Prevent multiple chapters being skipped
+      // by one trackpad gesture.
+      if (now - lastNavigation.current < 850) {
+        return;
+      }
+
+      lastNavigation.current = now;
+      wheelAccumulation.current = 0;
+
+      const nextDirection = next > activeIndex ? 1 : -1;
+
+      setDirection(nextDirection);
+
+      navigate({
+        pathname: "/",
+        hash: `#${chapters[next].id}`,
+      });
+    },
+    [activeIndex, navigate],
+  );
+
+  // Native wheel listener allows controlled non-passive handling.
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+
+    useEffect(() => {
+      const onWheel = (event: WheelEvent) => {
+        if (event.ctrlKey || event.metaKey) return;
+
+        const amount =
+          event.deltaY *
+          (event.deltaMode === 1
+            ? 16
+            : event.deltaMode === 2
+              ? window.innerHeight
+              : 1);
+
+        if (Math.abs(amount) < 0.1) return;
+
+        // Allow long sections to scroll internally.
+        if (canScrollInside(event.target, amount)) {
+          wheelAccumulation.current = 0;
+          return;
+        }
+
+        // Only capture wheel events for the homepage.
+        if (!stageRef.current) return;
+
+        event.preventDefault();
+
+        const previous = wheelAccumulation.current;
+
+        // Reset when reversing scroll direction.
+        if (previous !== 0 && Math.sign(previous) !== Math.sign(amount)) {
+          wheelAccumulation.current = 0;
+        }
+
+        wheelAccumulation.current += amount;
+
+        // Accumulate small trackpad gestures.
+        if (Math.abs(wheelAccumulation.current) < 65) {
+          return;
+        }
+
+        const nextDirection = wheelAccumulation.current > 0 ? 1 : -1;
+
+        wheelAccumulation.current = 0;
+
+        goToChapter(activeIndex + nextDirection);
+      };
+
+      window.addEventListener("wheel", onWheel, {
+        passive: false,
+      });
+
+      return () => {
+        window.removeEventListener("wheel", onWheel);
+      };
+    }, [activeIndex, goToChapter]);
+
+    stage.addEventListener("wheel", onWheel, {
+      passive: false,
+    });
+
+    return () => stage.removeEventListener("wheel", onWheel);
+  }, [activeIndex, goToChapter]);
+
+  // Keyboard navigation.
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (
+        event.altKey ||
+        event.ctrlKey ||
+        event.metaKey ||
+        editableElement(event.target)
+      ) {
+        return;
+      }
+
+      if (
+        ["ArrowDown", "PageDown"].includes(event.key) ||
+        (event.key === " " && !event.shiftKey)
+      ) {
+        // Don't interfere with activated buttons or links.
+        if (
+          event.target instanceof HTMLElement &&
+          event.target.closest("a,button")
+        ) {
+          return;
+        }
+
+        event.preventDefault();
+        goToChapter(activeIndex + 1);
+      }
+
+      if (
+        ["ArrowUp", "PageUp"].includes(event.key) ||
+        (event.key === " " && event.shiftKey)
+      ) {
+        event.preventDefault();
+        goToChapter(activeIndex - 1);
+      }
+
+      if (event.key === "Home") {
+        event.preventDefault();
+        goToChapter(0);
+      }
+
+      if (event.key === "End") {
+        event.preventDefault();
+        goToChapter(chapters.length - 1);
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [activeIndex, goToChapter]);
+
+  // Mobile swipe between chapters.
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+
+    const onTouchStart = (event: TouchEvent) => {
+      const touch = event.changedTouches[0];
+      if (!touch) return;
+
+      touchStart.current = {
+        x: touch.clientX,
+        y: touch.clientY,
+      };
+    };
+
+    const onTouchEnd = (event: TouchEvent) => {
+      const touch = event.changedTouches[0];
+      if (!touch) return;
+
+      const diffY = touchStart.current.y - touch.clientY;
+      const diffX = touchStart.current.x - touch.clientX;
+
+      if (Math.abs(diffY) < 65 || Math.abs(diffY) < Math.abs(diffX) * 1.25) {
+        return;
+      }
+
+      if (canScrollInside(event.target, diffY)) return;
+
+      goToChapter(activeIndex + (diffY > 0 ? 1 : -1));
+    };
+
+    stage.addEventListener("touchstart", onTouchStart, {
+      passive: true,
+    });
+    stage.addEventListener("touchend", onTouchEnd, {
+      passive: true,
+    });
+
+    return () => {
+      stage.removeEventListener("touchstart", onTouchStart);
+      stage.removeEventListener("touchend", onTouchEnd);
+    };
+  }, [activeIndex, goToChapter]);
+
+  // Focus the new chapter heading for keyboard users.
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      const heading =
+        activePageRef.current?.querySelector<HTMLElement>("h1, h2");
+
+      if (heading) {
+        heading.setAttribute("tabindex", "-1");
+        heading.focus({ preventScroll: true });
+      }
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [activeIndex]);
+
+  const CurrentView = views[activeIndex];
+
+  return (
+    <main id="main-content" className="chapter-experience" ref={stageRef}>
+      <div className="chapter-stage">
+        <AnimatePresence initial={false} custom={direction} mode="sync">
+          <motion.section
+            key={chapters[activeIndex].id}
+            data-active="true"
+            className={`chapter-page chapter-page--${chapters[activeIndex].id}`}
+            custom={direction}
+            variants={sceneVariants}
+            initial={reducedMotion ? { opacity: 0, scale: 1 } : "enter"}
+            animate={reducedMotion ? { opacity: 1, scale: 1 } : "center"}
+            exit={reducedMotion ? { opacity: 0, scale: 1 } : "exit"}
+            transition={{
+              duration: reducedMotion ? 0.18 : 0.88,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+          >
+            <div className="chapter-inner-scroll">
+              <CurrentView />
+            </div>
+          </motion.section>
+        </AnimatePresence>
+      </div>
+
+      <nav className="chapter-nav" aria-label="Portfolio chapters">
+        {chapters.map((chapter, index) => (
+          <button
+            key={chapter.id}
+            type="button"
+            className={
+              index === activeIndex ? "chapter-dot is-active" : "chapter-dot"
+            }
+            aria-label={`Go to ${chapter.name}`}
+            aria-current={index === activeIndex ? "step" : undefined}
+            onClick={() => goToChapter(index)}
+            title={chapter.name}
+          >
+            <span />
+          </button>
+        ))}
+      </nav>
+
+      <div className="chapter-counter" aria-live="polite">
+        <span>{chapters[activeIndex].number}</span>
+        <span className="chapter-counter-divider">/</span>
+        <span>06</span>
+      </div>
+
+      <div className="chapter-direction-controls">
+        <button
+          type="button"
+          onClick={() => goToChapter(activeIndex - 1)}
+          disabled={activeIndex === 0}
+          aria-label="Previous chapter"
+        >
+          ↑
+        </button>
+        <button
+          type="button"
+          onClick={() => goToChapter(activeIndex + 1)}
+          disabled={activeIndex === chapters.length - 1}
+          aria-label="Next chapter"
+        >
+          ↓
+        </button>
+      </div>
+    </main>
+  );
+}
